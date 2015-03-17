@@ -172,6 +172,18 @@ RemoveType .php .phtml .php3 .php4 .php5 .inc
 		<echo file="mysite/BUILD_NUMBER" append="false">Build ${BUILD_STAMP}</echo>
 
 		<!-- Copy the DB configs -->
+		<if>
+			<not>
+			<os family="windows" />
+			</not>
+			<then>
+				<echo>Touching configs if they exist</echo>
+				<exec command="touch --no-create mysite/local.conf.php" />
+				<exec command="touch --no-create mysite/_config/local.yml" />
+				<exec command="touch --no-create ssautesting/testing.conf.php" />
+				<exec command="touch --no-create .htaccess" />
+			</then>
+		</if>
 		<copy tofile="mysite/local.conf.php" file="${local.php.config}" overwrite="false">
 			<filterchain>
 				<expandproperties />
@@ -192,7 +204,7 @@ RemoveType .php .phtml .php3 .php4 .php5 .inc
 		</copy>
 
 		<!-- Copy the htaccess -->
-		<copy tofile=".htaccess" file="${htaccess.config}" overwrite="true">
+		<copy tofile=".htaccess" file="${htaccess.config}" overwrite="false">
 			<filterchain>
 				<expandproperties />
 			</filterchain>
