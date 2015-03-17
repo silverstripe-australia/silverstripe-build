@@ -1,0 +1,17 @@
+{
+	"name": "silverstripe-australia/build",
+	"description": "Phing build helpers for projects making use of the silverstripe-base installation process.",
+	"type": "silverstripe-module",
+	"keywords": ["silverstripe", "build"],
+	"license": "BSD-3-Clause",
+	"authors": [
+	{
+		"name": "Marcus Nyeholt",
+		"email": "marcus@silverstripe.com.au"
+	}
+	],
+	"require":
+	{
+	
+	}
+}
