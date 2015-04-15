@@ -380,6 +380,21 @@ Deny from all
 		<delete file="${project.basedir}/framework/tests/WebserverRoutingTest.php" />
 		<phingcall target="test" />
 	</target>
+	
+	<target name="start_selenium">
+		<if>
+			<not><available file="ssautesting/selenium.jar" /></not>
+			<then>
+				<exec command="curl http://selenium-release.storage.googleapis.com/2.45/selenium-server-standalone-2.45.0.jar -o ssautesting/selenium.jar" passthru="true" />
+			</then>
+		</if>
+		<exec command="java -jar ssautesting/selenium.jar -Ddummy-config=selenium_${phing.project.name}" spawn="true" />
+	</target>
+	
+	<target name="kill_selenium">
+		<echo>Killing selenium in ${project.basedir}</echo>
+		<exec command="ps -ef | grep selenium_${phing.project.name} | grep -v grep | awk '{print $2}' | xargs kill " spawn="true" />
+	</target>
 
 	<target name="start_solr">
 		<echo>Executing solr in ${project.basedir}</echo>
