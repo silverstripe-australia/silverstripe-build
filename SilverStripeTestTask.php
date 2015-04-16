@@ -14,6 +14,7 @@ class SilverStripeTestTask extends SilverStripeBuildTask
 	private $testcase = '';
 	private $doFlush = false;
 	private $doBuild = false;
+	private $coverage = false;
 	
 	public function setModule($v) {
 		if (strpos($v, '$') === false) {
@@ -36,6 +37,12 @@ class SilverStripeTestTask extends SilverStripeBuildTask
 	public function setBuild($v) {
 		if (strpos($v, '$') === false) {
 			$this->doBuild = $v;
+		}
+	}
+	
+	public function setCoverage($v) {
+		if (strpos($v, '$') === false) {
+			$this->coverage = $v;
 		}
 	}
 
@@ -66,6 +73,10 @@ class SilverStripeTestTask extends SilverStripeBuildTask
 		$flush = "flush=1";
 		if (!$this->doFlush) {
 			$flush = "flush=0";
+		}
+		
+		if ($this->coverage) {
+			$testCmd = str_replace('dev/tests/', 'dev/tests/coverage/', $testCmd);
 		}
 		
 		$testCmd .= " disable_perms=1 $flush $build";

@@ -145,42 +145,29 @@ Other features
 		<property file="${project.basedir}/build/build.properties"></property>
 		<!-- <fail>!!Please create the build/build.properties file before continuing!!</fail> -->
 	</target>
-
-	<!-- A target that gets executed if the 'ni_build' parameter is set. This is done when
-	the build is executed from a CI container -->
-	<target name="non_interactive" if="ni_build">
-		<!-- we'll make sure that there's a build.properties file, even if we're just using the default  -->
-		<delete file="${project.basedir}/build/build.properties" />
-		<copy tofile="${project.basedir}/build/build.properties" file="${project.basedir}/build/build.properties.sample" />
-		<delete dir="assets" />
-		<delete file="${project.basedir}/mysite/local.conf.php" />
-		<delete file="${project.basedir}/mysite/_config/local.yml" />
-		<delete file="${project.basedir}/ssautesting/testing.conf.php" />
-		<property name="properties_exist" value="true" override="true" />
-		<property file="${project.basedir}/build/build.properties"></property>
-	</target>
-
-	<!-- Installs a freshly checked-out silverstripe project -->
-	<target name="build" depends="init">
+	
+	<!-- default config file set -->
+	<target name="default_configs" description="Ensure default configuration files are available">
 		<!-- if it doesn't exist, create it and the default .htaccess -->
 		<mkdir dir="assets" />
-		<echo file="assets/.htaccess" append="false">
+		<if>
+			<not><available file="assets/.htaccess" /></not>
+			<then>
+				<echo file="assets/.htaccess" append="false">
 RemoveHandler .php .phtml .php3 .php4 .php5 .inc
 RemoveType .php .phtml .php3 .php4 .php5 .inc
-		</echo>
-
-		<echo file="mysite/BUILD_NUMBER" append="false">Build ${BUILD_STAMP}</echo>
-
+				</echo>
+			</then>
+		</if>
 		<!-- Copy the DB configs -->
 		<if>
-			<not>
-			<os family="windows" />
-			</not>
+			<not><os family="windows" /></not>
 			<then>
 				<echo>Touching configs if they exist</echo>
 				<exec command="touch --no-create mysite/local.conf.php" />
 				<exec command="touch --no-create mysite/_config/local.yml" />
 				<exec command="touch --no-create ssautesting/testing.conf.php" />
+				<exec command="touch --no-create ssautesting/html/.htaccess" />
 				<exec command="touch --no-create .htaccess" />
 			</then>
 		</if>
@@ -202,13 +189,45 @@ RemoveType .php .phtml .php3 .php4 .php5 .inc
 				<expandproperties />
 			</filterchain>
 		</copy>
-
+		
+		<!-- set up the html report output dir with an htaccess -->
+		<if>
+			<not><available file="ssautesting/html/.htaccess" /></not>
+			<then>
+				<mkdir dir="ssautesting/html" />
+				<echo file="ssautesting/html/.htaccess" append="false">
+Allow from 127.0.0.1
+				</echo>
+			</then>
+		</if>
+		
 		<!-- Copy the htaccess -->
 		<copy tofile=".htaccess" file="${htaccess.config}" overwrite="false">
 			<filterchain>
 				<expandproperties />
 			</filterchain>
 		</copy>
+	</target>
+
+	<!-- A target that gets executed if the 'ni_build' parameter is set. This is done when
+	the build is executed from a CI container -->
+	<target name="non_interactive" if="ni_build">
+		<!-- we'll make sure that there's a build.properties file, even if we're just using the default  -->
+		<delete file="${project.basedir}/build/build.properties" />
+		<copy tofile="${project.basedir}/build/build.properties" file="${project.basedir}/build/build.properties.sample" />
+		<delete dir="assets" />
+		<delete file="${project.basedir}/mysite/local.conf.php" />
+		<delete file="${project.basedir}/mysite/_config/local.yml" />
+		<delete file="${project.basedir}/ssautesting/testing.conf.php" />
+		<property name="properties_exist" value="true" override="true" />
+		<property file="${project.basedir}/build/build.properties"></property>
+	</target>
+
+	<!-- Installs a freshly checked-out silverstripe project -->
+	<target name="build" depends="init,default_configs">
+		<echo file="mysite/BUILD_NUMBER" append="false">Build ${BUILD_STAMP}</echo>
+		
+		
 
 		<phingcall target="update-composer" />
 		<phingcall target="update_modules" />
@@ -418,7 +437,7 @@ Deny from all
 			</filterchain>
 		</copy>
 		<exec command="php framework/cli-script.php dev/build"></exec>
-		<sstest module="${module}" testcase="${testcase}" flush="${flush}" build="${build}" />
+		<sstest module="${module}" testcase="${testcase}" flush="${flush}" build="${build}" coverage="${coverage}" />
 	</target>
 
 	<target name="archive-package">
