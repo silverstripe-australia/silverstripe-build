@@ -101,29 +101,9 @@ Other features
 		<ssmodules file="${modules.depends.file}" noninteractive="${ni_build}"/>
 	</target>
 
-	<target name="update-composer">
-		<if>
-			<available file="composer.json" />
-			<then>
-				<if>
-					<not><available file="composer.phar" /></not>
-					<then>
-						<exec command="curl -s http://getcomposer.org/installer | php" passthru="true" />
-					</then>
-				</if>
-
-				<if>
-					<available file="composer.lock" />
-					<then>
-						<exec command="php composer.phar update --prefer-source" passthru="true" />
-					</then>
-					<else>
-						<exec command="php composer.phar install --prefer-source" passthru="true" />
-					</else>
-				</if>
-				
-			</then>
-		</if>
+	<!-- deprecated target; defers to base install target now -->
+	<target name="update-composer" depends="composer-install">
+		
 	</target>
 
 	<target name="create_modules_file" unless="modules_file_exists">
@@ -167,7 +147,7 @@ RemoveType .php .phtml .php3 .php4 .php5 .inc
 				<exec command="touch --no-create mysite/local.conf.php" />
 				<exec command="touch --no-create mysite/_config/local.yml" />
 				<exec command="touch --no-create ssautesting/testing.conf.php" />
-				<exec command="touch --no-create ssautesting/html/.htaccess" />
+				<exec command="touch --no-create ssautesting/artifacts/html/.htaccess" />
 				<exec command="touch --no-create .htaccess" />
 			</then>
 		</if>
@@ -192,10 +172,10 @@ RemoveType .php .phtml .php3 .php4 .php5 .inc
 		
 		<!-- set up the html report output dir with an htaccess -->
 		<if>
-			<not><available file="ssautesting/html/.htaccess" /></not>
+			<not><available file="ssautesting/artifacts/html/.htaccess" /></not>
 			<then>
-				<mkdir dir="ssautesting/html" />
-				<echo file="ssautesting/html/.htaccess" append="false">
+				<mkdir dir="ssautesting/artifacts/html" />
+				<echo file="ssautesting/artifacts/html/.htaccess" append="false">
 Allow from 127.0.0.1
 				</echo>
 			</then>
@@ -227,8 +207,6 @@ Allow from 127.0.0.1
 	<target name="build" depends="init,default_configs">
 		<echo file="mysite/BUILD_NUMBER" append="false">Build ${BUILD_STAMP}</echo>
 		
-		
-
 		<phingcall target="update-composer" />
 		<phingcall target="update_modules" />
 		<phingcall target="apply_patches" />
@@ -426,17 +404,18 @@ Deny from all
 	</target>
 
 	<!-- Execute all the test cases -->
-	<target name="test">
+	<target name="test" depends="default_configs">
 		<!-- Make sure the log directory exists -->
 		<mkdir dir="${testing.logdir}" />
 		<mkdir dir="assets" />
-		<!-- Copy the configs - done so that we can override the reporter type from an exernal source -->
-		<copy tofile="ssautesting/testing.conf.php" file="${testing.config}" overwrite="false">
-			<filterchain>
-				<expandproperties />
-			</filterchain>
-		</copy>
-		<exec command="php framework/cli-script.php dev/build"></exec>
+		<if>
+			<not>
+				<available file="vendor/phpunit/phpunit/phpunit.php" />
+			</not>
+			<then>
+				<phingcall target="composer-install" />
+			</then>
+		</if>
 		<sstest module="${module}" testcase="${testcase}" flush="${flush}" build="${build}" coverage="${coverage}" />
 	</target>
 
