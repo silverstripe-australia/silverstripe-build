@@ -418,7 +418,7 @@ Deny from all
 			</filterchain>
 		</copy>
 		<exec command="php framework/cli-script.php dev/build"></exec>
-		<sstest module="${module}" testcase="${testcase}" />
+		<sstest module="${module}" testcase="${testcase}" flush="${flush}" build="${build}" />
 	</target>
 
 	<target name="archive-package">
