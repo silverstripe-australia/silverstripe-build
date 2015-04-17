@@ -10,7 +10,7 @@
 # This reads and loads the modules one by one to remove any problems
 # with dependencies between modules. Just make sure they're 
 # in the file in the order they should be loaded...
-modules.depends.file=build/dependent-modules
+modules.depends.file=mysite/build/dependent-modules
 
 # The core modules for silverstripe
 modules.core.file=build/core-modules
@@ -49,7 +49,7 @@ git.branch=master
 
 build.output.dir=build
 build.archive.dir=${build.output.dir}/archive
-patches.dir=build/patches
+patches.dir=mysite/build/patches
 
 # Module package information
 module.name=${phing.project.name}
