@@ -266,7 +266,7 @@ Allow from 127.0.0.1
 				<exclude name="mysite/_config/local.yml" />
 				<exclude name="mysite/db.conf.php" />
 				<exclude name="mysite/*.log" />
-				<exclude name="mysite/build/** />
+				<exclude name="mysite/build/**" />
 				<exclude name="**/.svn/**" />
 				<exclude name="**/.git/**" />
 				<exclude name="nbproject/**" />
