@@ -98,7 +98,13 @@ Other features
 
 	<!-- Load modules where sensitive dependency exists -->
 	<target name="update_modules" depends="create_modules_file">
-		<ssmodules file="${modules.depends.file}" noninteractive="${ni_build}"/>
+        <if>
+            <available file="${modules.depends.file}.default" />
+            <then>
+                <ssmodules file="${modules.depends.file}" noninteractive="${ni_build}"/>
+            </then>
+        </if>
+		
 	</target>
 
 	<!-- deprecated target; defers to base install target now -->
@@ -107,7 +113,13 @@ Other features
 	</target>
 
 	<target name="create_modules_file" unless="modules_file_exists">
-		<copy file="${modules.depends.file}.default" tofile="${modules.depends.file}" />
+        <if>
+            <available file="${modules.depends.file}.default" />
+            <then>
+                <copy file="${modules.depends.file}.default" tofile="${modules.depends.file}" />
+            </then>
+        </if>
+		
 	</target>
 
 	<!--
@@ -330,7 +342,7 @@ Allow from 127.0.0.1
 				<exclude name="mysite/_config/local.yml" />
 				<exclude name="mysite/*.log" />
 				<exclude name="build/**" />
-				<exclude name="mysite/build/** />
+				<exclude name="mysite/build/**" />
 				<exclude name="build.xml" />
 				<exclude name="_ss_environment.php" />
 				<exclude name=".htaccess" />
