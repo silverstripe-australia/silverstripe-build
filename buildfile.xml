@@ -128,7 +128,7 @@ Other features
 	
 	<!-- default config file set -->
 	<target name="default_configs" description="Ensure default configuration files are available">
-		<!-- if it doesn't exist, create it and the default .htaccess -->
+		<!-- if assets folder doesn't exist, create it and the default .htaccess -->
 		<mkdir dir="assets" />
 		<if>
 			<not><available file="assets/.htaccess" /></not>
@@ -151,20 +151,40 @@ RemoveType .php .phtml .php3 .php4 .php5 .inc
 				<exec command="touch --no-create .htaccess" />
 			</then>
 		</if>
-		<copy tofile="mysite/local.conf.php" file="${local.php.config}" overwrite="false">
+		
+		<!-- with the following configs, we use the build/ base, but if there's a project specific
+		replacement, we use that -->
+		<property name="config_prefix" value="" />
+		<if>
+			<available file="mysite/${local.php.config}" />
+			<then><property name="config_prefix" value="mysite/" override="true" /></then>
+		</if>
+		<echo>local.php prefix = ${config_prefix}</echo>
+		<copy tofile="mysite/local.conf.php" file="${config_prefix}${local.php.config}" overwrite="false">
 			<filterchain>
 				<expandproperties />
 			</filterchain>
 		</copy>
 		
-		<copy tofile="mysite/_config/local.yml" file="${local.yml.config}" overwrite="false">
+		<property name="config_prefix" value="" override="true" />
+		<if>
+			<available file="mysite/${local.yml.config}" />
+			<then><property name="config_prefix" value="mysite/" override="true" /></then>
+		</if>
+		<echo>local.yml prefix = ${config_prefix}</echo>
+		<copy tofile="mysite/_config/local.yml" file="${config_prefix}${local.yml.config}" overwrite="false">
 			<filterchain>
 				<expandproperties />
 			</filterchain>
 		</copy>
 
+		<property name="config_prefix" value="" override="true" />
+		<if>
+			<available file="mysite/${testing.config}" />
+			<then><property name="config_prefix" value="mysite/" override="true" /></then>
+		</if>
 		<!-- Copy the configs to be used for testing. Set the required variables in the build.properties file -->
-		<copy tofile="ssautesting/testing.conf.php" file="${testing.config}" overwrite="false">
+		<copy tofile="ssautesting/testing.conf.php" file="${config_prefix}${testing.config}" overwrite="false">
 			<filterchain>
 				<expandproperties />
 			</filterchain>
@@ -180,9 +200,14 @@ Allow from 127.0.0.1
 				</echo>
 			</then>
 		</if>
-		
+
+		<property name="config_prefix" value="" override="true" />
+		<if>
+			<available file="mysite/${htaccess.config}" />
+			<then><property name="config_prefix" value="mysite/" override="true" /></then>
+		</if>
 		<!-- Copy the htaccess -->
-		<copy tofile=".htaccess" file="${htaccess.config}" overwrite="false">
+		<copy tofile=".htaccess" file="${config_prefix}${htaccess.config}" overwrite="false">
 			<filterchain>
 				<expandproperties />
 			</filterchain>
@@ -241,6 +266,7 @@ Allow from 127.0.0.1
 				<exclude name="mysite/_config/local.yml" />
 				<exclude name="mysite/db.conf.php" />
 				<exclude name="mysite/*.log" />
+				<exclude name="mysite/build/** />
 				<exclude name="**/.svn/**" />
 				<exclude name="**/.git/**" />
 				<exclude name="nbproject/**" />
@@ -304,6 +330,7 @@ Allow from 127.0.0.1
 				<exclude name="mysite/_config/local.yml" />
 				<exclude name="mysite/*.log" />
 				<exclude name="build/**" />
+				<exclude name="mysite/build/** />
 				<exclude name="build.xml" />
 				<exclude name="_ss_environment.php" />
 				<exclude name=".htaccess" />
