@@ -243,6 +243,8 @@ class SilverStripeDeployTask extends SilverStripeBuildTask {
 			$data .= $buf;
 		}
 
+		fclose($stream);
+
 		if (strpos($data, '__COMPLETE') !== false || $this->ignoreerrors || $failOkay) {
 			$data = str_replace('__COMPLETE', '', $data);
 		} else {
@@ -250,7 +252,6 @@ class SilverStripeDeployTask extends SilverStripeBuildTask {
 			throw new BuildException("Failed executing command : $data");
 		}
 
-		fclose($stream);
 
 		return $data;
 	}
