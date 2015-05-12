@@ -238,6 +238,7 @@ Allow from 127.0.0.1
 		<delete file="${project.basedir}/ssautesting/testing.conf.php" />
 		<property name="properties_exist" value="true" override="true" />
 		<property file="${project.basedir}/build/build.properties"></property>
+		<mkdir dir="${project.basedir}/silverstripe-cache" />
 	</target>
 
 	<!-- Installs a freshly checked-out silverstripe project -->
@@ -414,6 +415,8 @@ Deny from all
 	<target name="ci_test" depends="build">
 		<!-- lets get rid of files that we don't want tested -->
 		<delete file="${project.basedir}/framework/tests/WebserverRoutingTest.php" />
+		<property name="flush" value="1" override="true" />
+		<property name="build" value="1" override="true" />
 		<phingcall target="test" />
 	</target>
 	
