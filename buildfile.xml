@@ -37,9 +37,9 @@
 	<php expression="trim(file_get_contents('${module.name}/VERSION'))" returnProperty="module.version" />
 
 	<if>
-		<isset property="env.BUILD_NUMBER" />
+		<isset property="env.GIT_COMMIT" />
 		<then>
-			<property name="BUILD_STAMP" value="${env.BUILD_NUMBER}" />
+			<property name="BUILD_STAMP" value="${env.GIT_COMMIT}" />
 		</then>
 		<else>
 			<property name="BUILD_STAMP" value="${DSTAMP}" />
