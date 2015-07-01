@@ -268,7 +268,8 @@ putenv('APACHE_RUN_USER=deploy');
 		<phingcall target="apply_patches" />
 
 		<!-- Trigger /dev/build for the new system -->
-		<exec command="php framework/cli-script.php dev/build"></exec>
+		<echo>Running dev/build</echo>
+		<exec command="php framework/cli-script.php dev/build" passthru="true"></exec>
 	</target>
 
 	<target name="apply_patches">
