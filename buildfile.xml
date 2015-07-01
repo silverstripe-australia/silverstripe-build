@@ -268,8 +268,8 @@ putenv('APACHE_RUN_USER=deploy');
 		<phingcall target="apply_patches" />
 
 		<!-- Trigger /dev/build for the new system -->
-		<echo>Running dev/build</echo>
-		<exec command="php framework/cli-script.php dev/build" passthru="true"></exec>
+		<echo>Running dev/build with flush and permission disabling</echo>
+		<exec command="php framework/cli-script.php dev/build flush=1 disable_perms=1" passthru="true"></exec>
 	</target>
 
 	<target name="apply_patches">
