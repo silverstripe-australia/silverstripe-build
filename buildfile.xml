@@ -311,6 +311,33 @@ putenv('APACHE_RUN_USER=deploy');
 			</fileset>
 		</tar>
 	</target>
+	
+	<!-- a package that includes all items that the phing build normally downloads, which can
+	be just extracted over the top of whatever is pulled out of git. This preserves all the
+	.svn files for dependent modules etc -->
+	<target name="distro" depends="">
+		<property name="currentpackage" value="${build.output.dir}/${distro-package.name}" />
+		<property name="packagetype" value="dist" />
+		<phingcall target="archive-package" />
+
+		<tar destfile="${build.output.dir}/${distro-package.name}" compression="gzip">
+			<fileset dir="${project.basedir}">
+				<include name="**/**" />
+				<exclude name="sitemap.xml" />
+				<exclude name="google*.html" />
+				<exclude name="silverstripe-cache/" />
+				<exclude name="build.xml" />
+				<exclude name="build/**" />
+				<exclude name="build/archive/**" />
+				<exclude name="nbproject/**" />
+				<exclude name="**/.project" />
+				<exclude name="**/.buildpath" />
+				<exclude name="**/.settings" />
+				<exclude name="**/.git/**" />
+			</fileset>
+		</tar>
+		<chmod file="${build.output.dir}/${distro-package.name}" mode="0664" />
+	</target>
 
 	<target name="gittest">
 	<echo>This thing ${git.branch}</echo>

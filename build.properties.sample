@@ -61,6 +61,7 @@ module.file=${build.output.dir}/${module.prefix}${module.name}-${module.version}
 # Note that these are output to the scripts folder so they are inaccessible from the web
 # via .htaccess rules
 package.name=${phing.project.name}-deploy.${git.branch}.${BUILD_STAMP}.tar.gz
+distro-package.name=${phing.project.name}-dist.${git.branch}.${BUILD_STAMP}.tar.gz
 phing-package.name=${phing.project.name}-development.${git.branch}.${BUILD_STAMP}.tar.gz
 update-package.name=${phing.project.name}-update.${git.branch}.${BUILD_STAMP}.tar.gz
 themes-package.name=${phing.project.name}-themes.${git.branch}.${BUILD_STAMP}.tar.gz
