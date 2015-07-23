@@ -34,8 +34,6 @@
 
 	<property file="${project.basedir}/build/build.properties"></property>
 
-	<php expression="trim(file_get_contents('${module.name}/VERSION'))" returnProperty="module.version" />
-
 	<if>
 		<isset property="env.GIT_COMMIT" />
 		<then>
