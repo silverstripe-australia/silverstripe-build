@@ -27,7 +27,7 @@ This will clear out any project cache files (for all projects), and is basically
 
 ### sh ~/path/to/permissions
 
-This requires you to update the "user" and as such will need to be copied out to a location of your choice, and will apply the appropriate owner and permissions to both the cache and repository.
+This requires you to update the "{user}" and as such will need to be copied out to a location of your choice, and will apply the appropriate owner and permissions to both the cache and repository.
 
 ### sh build/scripts/recursive-status
 
