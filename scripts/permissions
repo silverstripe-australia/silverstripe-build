@@ -1,6 +1,16 @@
-sudo usermod -a -G www-data $USER
-sudo chown -R user:www-data /tmp/silverstripe-*
-sudo chmod g+w -R /tmp/silverstripe-*
+#
+# @author Nathan Glasl <nathan@silverstripe.com.au>
+#
+
+sudo usermod -a -G www-data $USER;
 sudo find . -type d -exec chmod 2775 {} \;
 sudo find . -type f -exec chmod 664 {} \;
-sudo chown -R user:www-data *
+sudo chown -R nathan:www-data *;
+find -name local.conf.php -exec sudo chown root:root {} \;
+
+# These files may not exist.
+
+if ls -U /tmp/silverstripe-* 1> /dev/null 2>&1; then
+	sudo chmod g+w -R /tmp/silverstripe-*;
+	sudo chown -R nathan:www-data /tmp/silverstripe-*;
+fi

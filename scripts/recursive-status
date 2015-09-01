@@ -1,8 +1,31 @@
+#
+# @author Nathan Glasl <nathan@silverstripe.com.au>
+#
+
+printf '\n';
 find . -maxdepth 2 -type d -exec sh -c "(cd {} && (
 	if [ -d '.git' ]; then
-		echo '\033[1;34m {} \033[37;0m';
-		git fetch origin;
-		git config core.filemode false;
-		git status;
+
+		# Display the current directory.
+
+		printf '\033[1;34m{}\033[37;0m\n\n';
+
+		# Remove any unwanted files and retrieve the git status.
+
+		if [ $# -eq 0 ]; then
+			find . -name "*.rej" -print0 | xargs -0 rm -rf;
+			find . -name "*.orig" -print0 | xargs -0 rm -rf;
+			git fetch origin;
+			git config core.filemode false;
+			git status;
+			printf '\n';
+
+		# Display any files that have been ignored, and make sure they reflect the upstream (a phing will be needed afterwards).
+
+		else
+			printf '\033[1;32m';
+			git ls-files -v | grep '^[[:lower:]]' | sed G;
+			git checkout .;
+		fi
 	fi
 ))" ";"

@@ -1,0 +1,12 @@
+#
+# @author Nathan Glasl <nathan@silverstripe.com.au>
+#
+
+# These files may not exist.
+
+if ls -U /tmp/silverstripe-* 1> /dev/null 2>&1; then
+	sudo rm -r /tmp/silverstripe-*;
+fi
+if [ -d 'silverstripe-cache' ]; then
+	sudo rm -r silverstripe-cache;
+fi
