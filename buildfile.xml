@@ -154,11 +154,11 @@ RemoveType .php .phtml .php3 .php4 .php5 .inc
 			<not><os family="windows" /></not>
 			<then>
 				<echo>Touching configs if they exist</echo>
-				<exec command="touch --no-create mysite/local.conf.php" />
-				<exec command="touch --no-create mysite/_config/local.yml" />
-				<exec command="touch --no-create ssautesting/testing.conf.php" />
-				<exec command="touch --no-create ssautesting/artifacts/html/.htaccess" />
-				<exec command="touch --no-create .htaccess" />
+				<exec command="touch --no-create mysite/local.conf.php" checkreturn="true" />
+				<exec command="touch --no-create mysite/_config/local.yml" checkreturn="true" />
+				<exec command="touch --no-create ssautesting/testing.conf.php" checkreturn="true" />
+				<exec command="touch --no-create ssautesting/artifacts/html/.htaccess" checkreturn="true" />
+				<exec command="touch --no-create .htaccess" checkreturn="true" />
 			</then>
 		</if>
 		
@@ -267,7 +267,7 @@ putenv('APACHE_RUN_USER=deploy');
 
 		<!-- Trigger /dev/build for the new system -->
 		<echo>Running dev/build with flush and permission disabling</echo>
-		<exec command="php framework/cli-script.php dev/build flush=1 disable_perms=1" passthru="true"></exec>
+		<exec command="php framework/cli-script.php dev/build flush=1 disable_perms=1" passthru="true" checkreturn="true" />
 	</target>
 
 	<target name="apply_patches">
@@ -447,7 +447,7 @@ To restore this backup:
 		<echo file="${backup.dir}/.htaccess" append="false">
 Deny from all
 		</echo>
-		<exec command="mysqldump -u${db.user} -p${db.pass} ${db.name} > ${backup.sql}"></exec>
+		<exec command="mysqldump -u${db.user} -p${db.pass} ${db.name} > ${backup.sql}" checkreturn="true" />
 		<phingcall target="package" />
 	</target>
 
@@ -463,25 +463,25 @@ Deny from all
 		<if>
 			<not><available file="ssautesting/selenium.jar" /></not>
 			<then>
-				<exec command="curl http://selenium-release.storage.googleapis.com/2.45/selenium-server-standalone-2.45.0.jar -o ssautesting/selenium.jar" passthru="true" />
+				<exec command="curl http://selenium-release.storage.googleapis.com/2.45/selenium-server-standalone-2.45.0.jar -o ssautesting/selenium.jar" passthru="true" checkreturn="true" />
 			</then>
 		</if>
-		<exec command="java -jar ssautesting/selenium.jar -Ddummy-config=selenium_${phing.project.name}" spawn="true" />
+		<exec command="java -jar ssautesting/selenium.jar -Ddummy-config=selenium_${phing.project.name}" spawn="true" checkreturn="true" />
 	</target>
 	
 	<target name="kill_selenium">
 		<echo>Killing selenium in ${project.basedir}</echo>
-		<exec command="ps -ef | grep selenium_${phing.project.name} | grep -v grep | awk '{print $2}' | xargs kill " spawn="true" />
+		<exec command="ps -ef | grep selenium_${phing.project.name} | grep -v grep | awk '{print $2}' | xargs kill " spawn="true" checkreturn="true" />
 	</target>
 
 	<target name="start_solr">
 		<echo>Executing solr in ${project.basedir}</echo>
-		<exec command="cd solr/solr &amp;&amp; java -jar -Ddummy-config=solr_${phing.project.name} start.jar" spawn="true" />
+		<exec command="cd solr/solr &amp;&amp; java -jar -Ddummy-config=solr_${phing.project.name} start.jar" spawn="true" checkreturn="true" />
 	</target>
 
 	<target name="kill_solr">
 		<echo>Killing solr in ${project.basedir}</echo>
-		<exec command="ps -ef | grep solr_${phing.project.name} | grep -v grep | awk '{print $2}' | xargs kill " spawn="true" />
+		<exec command="ps -ef | grep solr_${phing.project.name} | grep -v grep | awk '{print $2}' | xargs kill " spawn="true" checkreturn="true" />
 	</target>
 
 	<!-- Execute all the test cases -->
