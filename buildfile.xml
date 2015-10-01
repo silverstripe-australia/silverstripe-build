@@ -170,11 +170,16 @@ RemoveType .php .phtml .php3 .php4 .php5 .inc
 			<then><property name="config_prefix" value="mysite/" override="true" /></then>
 		</if>
 		<echo>local.php prefix = ${config_prefix}</echo>
-		<copy tofile="mysite/local.conf.php" file="${config_prefix}${local.php.config}" overwrite="false">
-			<filterchain>
-				<expandproperties />
-			</filterchain>
-		</copy>
+		<if>
+			<not><available file="mysite/local.conf.php" /></not>
+			<then>
+				<copy tofile="mysite/local.conf.php" file="${config_prefix}${local.php.config}" overwrite="false">
+					<filterchain>
+						<expandproperties />
+					</filterchain>
+				</copy>
+			</then>
+		</if>
 		
 		<property name="config_prefix" value="" override="true" />
 		<if>
