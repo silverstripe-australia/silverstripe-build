@@ -154,11 +154,11 @@ RemoveType .php .phtml .php3 .php4 .php5 .inc
 			<not><os family="windows" /></not>
 			<then>
 				<echo>Touching configs if they exist</echo>
-				<exec command="touch --no-create mysite/local.conf.php" checkreturn="true" />
-				<exec command="touch --no-create mysite/_config/local.yml" checkreturn="true" />
-				<exec command="touch --no-create ssautesting/testing.conf.php" checkreturn="true" />
-				<exec command="touch --no-create ssautesting/artifacts/html/.htaccess" checkreturn="true" />
-				<exec command="touch --no-create .htaccess" checkreturn="true" />
+				<exec command="touch -c mysite/local.conf.php" checkreturn="true" />
+				<exec command="touch -c mysite/_config/local.yml" checkreturn="true" />
+				<exec command="touch -c ssautesting/testing.conf.php" checkreturn="true" />
+				<exec command="touch -c ssautesting/artifacts/html/.htaccess" checkreturn="true" />
+				<exec command="touch -c .htaccess" checkreturn="true" />
 			</then>
 		</if>
 		
@@ -170,11 +170,16 @@ RemoveType .php .phtml .php3 .php4 .php5 .inc
 			<then><property name="config_prefix" value="mysite/" override="true" /></then>
 		</if>
 		<echo>local.php prefix = ${config_prefix}</echo>
-		<copy tofile="mysite/local.conf.php" file="${config_prefix}${local.php.config}" overwrite="false">
-			<filterchain>
-				<expandproperties />
-			</filterchain>
-		</copy>
+		<if>
+			<not><available file="mysite/local.conf.php" /></not>
+			<then>
+				<copy tofile="mysite/local.conf.php" file="${config_prefix}${local.php.config}" overwrite="false">
+					<filterchain>
+						<expandproperties />
+					</filterchain>
+				</copy>
+			</then>
+		</if>
 		
 		<property name="config_prefix" value="" override="true" />
 		<if>
