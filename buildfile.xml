@@ -295,7 +295,8 @@ putenv('APACHE_RUN_USER=deploy');
 				<exclude name="sitemap.xml" />
 				<exclude name="google*.html" />
 				<exclude name="assets/**" />
-				<exclude name="build/archive/**" />
+				<exclude name="ssautesting/" />
+				<exclude name="build/" />
 				<exclude name="build.xml" />
 				<exclude name="mysite/local.conf.php" />
 				<exclude name="mysite/_config/local.yml" />
@@ -311,6 +312,9 @@ putenv('APACHE_RUN_USER=deploy');
 				<exclude name="**/.buildpath" />
 				<exclude name="**/.settings" />
 				<exclude name="phpunit.*" />
+				<exclude name="**/*.rej" />
+				<exclude name="README*" />
+				<exclude name="composer.phar" />
 			</fileset>
 		</tar>
 	</target>
