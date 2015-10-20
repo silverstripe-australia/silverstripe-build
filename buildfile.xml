@@ -313,6 +313,7 @@ putenv('APACHE_RUN_USER=deploy');
 				<exclude name="**/.settings" />
 				<exclude name="phpunit.*" />
 				<exclude name="**/*.rej" />
+				<exclude name="**/*.orig" />
 				<exclude name="README*" />
 				<exclude name="composer.phar" />
 			</fileset>
