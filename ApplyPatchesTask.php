@@ -33,7 +33,7 @@ class ApplyPatchesTask extends Task {
 			$file = $this->patchDir . '/' . $patch;
 
 			if (is_file($file)) {
-				$exec = "patch -p0 < $file";
+				$exec = "patch -p0 --no-backup-if-mismatch -i $file";
 				echo shell_exec($exec);
 			}
 		}
