@@ -23,7 +23,7 @@ class ApplyPatchesTask extends Task {
 
 		// read all the files in
 		$patches = scandir($this->patchDir);
-
+		$isWindowsOS = (strtoupper(substr(PHP_OS, 0, 3)) === 'WIN');
 		
 		foreach ($patches as $patch) {
 			if ($patch == '.' || $patch == '..') {
@@ -31,10 +31,19 @@ class ApplyPatchesTask extends Task {
 			}
 
 			$file = $this->patchDir . '/' . $patch;
+			if (!is_file($file)) {
+				continue;
+			}
 
-			if (is_file($file)) {
-				$exec = "patch -p0 --no-backup-if-mismatch -i $file";
+			$patchParameters = "patch -p0 --ignore-whitespace --no-backup-if-mismatch -i";
+			if ($isWindowsOS) {
+				$temp_file = tempnam(sys_get_temp_dir(), $patch);
+				$exec = "dos2unix -n $file $temp_file";
 				echo shell_exec($exec);
+				echo shell_exec($patchParameters.' '.$temp_file);
+				@unlink($temp_file);
+			} else {
+				echo shell_exec($patchParameters.' '.$file);
 			}
 		}
 	}
