@@ -33,8 +33,26 @@ class ApplyPatchesTask extends Task {
 			$file = $this->patchDir . '/' . $patch;
 
 			if (is_file($file)) {
-				$exec = "patch -p0 --no-backup-if-mismatch -i $file";
-				echo shell_exec($exec);
+				$exec_output = [];
+				$exec_check_output = [];
+
+				$exec_check_command = "patch --strip 0 --no-backup-if-mismatch --input $file --reverse --dry-run";
+				$exec_command = "patch --strip 0 --no-backup-if-mismatch --input $file";
+
+				$this->log("Run: $exec_command");
+				exec($exec_check_command, $exec_check_output, $exec_check_return);
+
+				if ($exec_check_return) {
+					exec($exec_command, $exec_output, $exec_return);
+					$this->log(implode("\n", $exec_output) . "\n\n");
+
+					if ($exec_return) {
+						throw new Exception("The patch produced errors");
+					}
+				} else {
+					$this->log("This patch is already applied - skipping\n", Project::MSG_WARN);
+					$this->project->setProperty('patches_applied', true);
+				}
 			}
 		}
 	}
