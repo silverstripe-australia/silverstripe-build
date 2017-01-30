@@ -278,6 +278,20 @@ putenv('APACHE_RUN_USER=deploy');
 	<target name="apply_patches">
 		<mkdir dir="${patches.dir}" />
 		<sspatches patchdir="${patches.dir}" />
+		<if>
+			<isset property="check_patches" />
+			<then>
+				<if>
+					<isset property="patches_applied" />
+					<then>
+						<fail>Patches already applied - this needs fixing</fail>
+					</then>
+					<else>
+						<echo message="Patches successful" />
+					</else>
+				</if>
+			</then>
+		</if>
 	</target>
 	
 
