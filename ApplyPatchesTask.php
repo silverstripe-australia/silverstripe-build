@@ -1,6 +1,8 @@
 <?php
 /* All code covered by the BSD license located at http://silverstripe.org/bsd-license/ */
 
+include_once dirname(__FILE__).'/SilverStripeBuildTask.php';
+
 /**
  * Task for applying patch files from a folder to a source trunk
  *
@@ -8,7 +10,7 @@
  *
  * @author Marcus Nyeholt <marcus@silverstripe.com.au>
  */
-class ApplyPatchesTask extends Task {
+class ApplyPatchesTask extends SilverStripeBuildTask {
     private $patchDir;
 
 	public function setPatchDir($v) {
@@ -47,7 +49,7 @@ class ApplyPatchesTask extends Task {
 					$this->log(implode("\n", $exec_output) . "\n\n");
 
 					if ($exec_return) {
-						throw new Exception("The patch produced errors");
+						throw new Exception($this->formatWithColor("fg-white, bg-red", "The patch produced errors"));
 					}
 				} else {
 					$this->log("This patch is already applied - skipping\n", Project::MSG_WARN);
