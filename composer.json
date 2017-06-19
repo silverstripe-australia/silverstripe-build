@@ -1,5 +1,5 @@
 {
-	"name": "silverstripe-australia/build",
+	"name": "symbiote/silverstripe-build",
 	"description": "Phing build helpers for projects making use of the silverstripe-base installation process.",
 	"type": "silverstripe-module",
 	"keywords": ["silverstripe", "build"],
@@ -16,7 +16,7 @@
 	},
 	"extra": {
 		"branch-alias": {
-			"dev-master": "2.1.x-dev"
+			"dev-master": "3.0.x-dev"
 		}
 	}
 }
