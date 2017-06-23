@@ -8,7 +8,7 @@ include_once dirname(__FILE__).'/SilverStripeBuildTask.php';
  *
  * Assumes that the patches were created relative to the root folder of the application
  *
- * @author Marcus Nyeholt <marcus@silverstripe.com.au>
+ * @author Marcus Nyeholt <marcus@symbiote.com.au>
  */
 class ApplyPatchesTask extends SilverStripeBuildTask {
     private $patchDir;
