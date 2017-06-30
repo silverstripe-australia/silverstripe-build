@@ -15,6 +15,7 @@
 	
 	},
 	"extra": {
+		"installer-name": "build",
 		"branch-alias": {
 			"dev-master": "2.1.x-dev"
 		}
