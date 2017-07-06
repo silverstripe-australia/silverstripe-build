@@ -151,7 +151,7 @@ class SilverStripeDeployTask extends SilverStripeBuildTask {
 		$this->execute($cmd);
 
 		$this->log("Executing dev/build");
-		$this->execute("php $releasePath/$this->sapphirepath/cli-script.php dev/build");
+		// $this->execute("php $releasePath/$this->sapphirepath/cli-script.php dev/build");
 
 		if (!$this->inplace) {
 			$this->preLinkSwitch($releasePath);

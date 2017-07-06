@@ -16,6 +16,24 @@ Installation
 * If you require additional modules, add them into the scripts/dependent-modules file, then run `phing -f scripts/build.xml update_modules`
 * Run `phing -f scripts/build.xml test` to make sure everything's working as expected
 
+
+## Composer scripts
+
+If your themes use yarn based dependencies, you can add the following post-install 
+scripts to be triggered by a composer call, which will ensure the node\_modules
+are installed correctly
+
+```
+    "scripts": {
+		"post-update-cmd": [		
+	            "Symbiote\\Build\\ThemeBuilder::run"
+		],
+		"post-install-cmd": [
+	            "Symbiote\\Build\\ThemeBuilder::run"
+		]
+	},
+```
+
 Optional Scripts
 ----------------------
 
