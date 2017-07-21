@@ -156,8 +156,8 @@ RemoveType .php .phtml .php3 .php4 .php5 .inc
 				<echo>Touching configs if they exist</echo>
 				<exec command="touch -c mysite/local.conf.php" checkreturn="true" />
 				<exec command="touch -c mysite/_config/local.yml" checkreturn="true" />
-				<exec command="touch -c silverstripe-test-assist/testing.conf.php" checkreturn="true" />
-				<exec command="touch -c silverstripe-test-assist/artifacts/html/.htaccess" checkreturn="true" />
+				<exec command="touch -c test-assist/testing.conf.php" checkreturn="true" />
+				<exec command="touch -c test-assist/artifacts/html/.htaccess" checkreturn="true" />
 				<exec command="touch -c .htaccess" checkreturn="true" />
 			</then>
 		</if>
@@ -199,7 +199,7 @@ RemoveType .php .phtml .php3 .php4 .php5 .inc
 			<then><property name="config_prefix" value="mysite/" override="true" /></then>
 		</if>
 		<!-- Copy the configs to be used for testing. Set the required variables in the build.properties file -->
-		<copy tofile="silverstripe-test-assist/testing.conf.php" file="${config_prefix}${testing.config}" overwrite="false">
+		<copy tofile="test-assist/testing.conf.php" file="${config_prefix}${testing.config}" overwrite="false">
 			<filterchain>
 				<expandproperties />
 			</filterchain>
@@ -207,10 +207,10 @@ RemoveType .php .phtml .php3 .php4 .php5 .inc
 		
 		<!-- set up the html report output dir with an htaccess -->
 		<if>
-			<not><available file="silverstripe-test-assist/artifacts/html/.htaccess" /></not>
+			<not><available file="test-assist/artifacts/html/.htaccess" /></not>
 			<then>
-				<mkdir dir="silverstripe-test-assist/artifacts/html" />
-				<echo file="silverstripe-test-assist/artifacts/html/.htaccess" append="false">
+				<mkdir dir="test-assist/artifacts/html" />
+				<echo file="test-assist/artifacts/html/.htaccess" append="false">
 Allow from 127.0.0.1
 				</echo>
 			</then>
@@ -238,7 +238,7 @@ Allow from 127.0.0.1
 		<delete dir="assets" />
 		<delete file="${project.basedir}/mysite/local.conf.php" />
 		<delete file="${project.basedir}/mysite/_config/local.yml" />
-		<delete file="${project.basedir}/silverstripe-test-assist/testing.conf.php" />
+		<delete file="${project.basedir}/test-assist/testing.conf.php" />
 		<property name="properties_exist" value="true" override="true" />
 		<property file="${project.basedir}/build/build.properties"></property>
 		<mkdir dir="${project.basedir}/silverstripe-cache" />
@@ -309,7 +309,7 @@ putenv('APACHE_RUN_USER=deploy');
 				<exclude name="sitemap.xml" />
 				<exclude name="google*.html" />
 				<exclude name="assets/**" />
-				<exclude name="silverstripe-test-assist/" />
+				<exclude name="test-assist/" />
 				<exclude name="build/" />
 				<exclude name="build.xml" />
 				<exclude name="mysite/local.conf.php" />
@@ -485,12 +485,12 @@ Deny from all
 	
 	<target name="start_selenium">
 		<if>
-			<not><available file="silverstripe-test-assist/selenium.jar" /></not>
+			<not><available file="test-assist/selenium.jar" /></not>
 			<then>
-				<exec command="curl http://selenium-release.storage.googleapis.com/2.45/selenium-server-standalone-2.45.0.jar -o silverstripe-test-assist/selenium.jar" passthru="true" checkreturn="true" />
+				<exec command="curl http://selenium-release.storage.googleapis.com/2.45/selenium-server-standalone-2.45.0.jar -o test-assist/selenium.jar" passthru="true" checkreturn="true" />
 			</then>
 		</if>
-		<exec command="java -jar silverstripe-test-assist/selenium.jar -Ddummy-config=selenium_${phing.project.name}" spawn="true" checkreturn="true" />
+		<exec command="java -jar test-assist/selenium.jar -Ddummy-config=selenium_${phing.project.name}" spawn="true" checkreturn="true" />
 	</target>
 	
 	<target name="kill_selenium">
