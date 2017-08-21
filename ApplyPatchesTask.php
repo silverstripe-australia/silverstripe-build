@@ -35,8 +35,8 @@ class ApplyPatchesTask extends SilverStripeBuildTask {
 			$file = $this->patchDir . '/' . $patch;
 
 			if (is_file($file)) {
-				$exec_output = [];
-				$exec_check_output = [];
+				$exec_output = array();
+				$exec_check_output = array();
 
 				$exec_check_command = "patch --strip 0 --no-backup-if-mismatch --input $file --reverse --dry-run";
 				$exec_command = "patch --strip 0 --no-backup-if-mismatch --input $file";
