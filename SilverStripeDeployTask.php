@@ -89,8 +89,14 @@ class SilverStripeDeployTask extends SilverStripeBuildTask {
 			$this->log("Copying configs");
 			$this->execute("cp $releasePath/mysite/.assets-htaccess $releasePath/assets/.htaccess");
 			$this->execute("cp $currentPath/.htaccess $releasePath/");
+			$this->execute("cp $currentPath/.env $releasePath/.env");
+
+			// These are legacy, but remain to support older projects.
+
 			$this->execute("cp $currentPath/_ss_environment.php $releasePath/");
 			$this->execute("cp $currentPath/mysite/local.conf.php $releasePath/mysite/local.conf.php");
+
+			// ---
 			
 			$localConf = "$currentPath/mysite/_config/local.yml";
 			$cmd = "if [ -f $localConf ]; then cp $localConf $releasePath/mysite/_config/; fi";
@@ -120,8 +126,14 @@ class SilverStripeDeployTask extends SilverStripeBuildTask {
 		if (!$this->incremental && !$this->inplace) {
 			$this->log("Copying configs");
 			$this->execute("cp $currentPath/.htaccess $releasePath/");
+			$this->execute("cp $currentPath/.env $releasePath/.env");
+
+			// These are legacy, but remain to support older projects.
+
 			$this->execute("cp $currentPath/_ss_environment.php $releasePath/");
 			$this->execute("cp $currentPath/mysite/local.conf.php $releasePath/mysite/local.conf.php");
+
+			// ---
 
 			$localConf = "$currentPath/mysite/_config/local.yml";
 			$cmd = "if [ -f $localConf ]; then cp $localConf $releasePath/mysite/_config/; fi";

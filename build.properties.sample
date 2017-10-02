@@ -15,9 +15,8 @@ modules.depends.file=mysite/build/dependent-modules
 # The core modules for silverstripe
 modules.core.file=build/core-modules
 
-local.php.config=build/configs/silverstripe/local.conf.sample.php
+local.php.config=build/configs/silverstripe/.env.sample
 local.yml.config=build/configs/silverstripe/local.sample.yml
-testing.config=build/configs/silverstripe/testing.conf.sample.php
 htaccess.config=build/configs/silverstripe/htaccess.sample
 
 # change this to the value that appears AFTER the TLD in your url 
@@ -25,7 +24,7 @@ htaccess.config=build/configs/silverstripe/htaccess.sample
 rewrite.base=/silverstripe
 
 # DB information
-db.type=SQLiteDatabase
+db.type=SQLite3Database
 db.user=dbuser
 db.pass=dbpass
 db.name=silverstripe

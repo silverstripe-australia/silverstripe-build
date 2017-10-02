@@ -6,7 +6,7 @@ sudo usermod -a -G www-data $USER;
 sudo find . -type d -exec chmod 2775 {} \;
 sudo find . -type f -exec chmod 664 {} \;
 sudo chown -R {user}:www-data *;
-find -name local.conf.php -exec sudo chown root:root {} \;
+find -name .env -exec sudo chown root:root {} \;
 
 # These files may not exist.
 

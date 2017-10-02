@@ -61,7 +61,6 @@ class LoadModulesTask extends SilverStripeBuildTask {
 	}
 
 	public function main() {
-		$this->configureEnvFile();
 
 		if ($this->name) {
 			$this->loadModule($this->name, $this->url);

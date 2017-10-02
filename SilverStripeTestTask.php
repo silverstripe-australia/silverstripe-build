@@ -53,7 +53,6 @@ class SilverStripeTestTask extends SilverStripeBuildTask
 	 */
 	function main()
 	{
-		$this->configureEnvFile();
 		
 		$testCmd = 'dev/tests/all';
 		
@@ -86,8 +85,6 @@ class SilverStripeTestTask extends SilverStripeBuildTask
 		// simply call the php ss-cli-script.php dev/tests/all. We ignore the errors because
 		// the test report script picks them up later on. 
 		$this->exec('php framework/cli-script.php '.$testCmd, false, true);
-
-		$this->cleanEnv();
 		
 		/*if (preg_match("/(\d+) tests run: (\d+) passes, (\d+) fails, and (\d+) exceptions/i", $output, $matches)) {
 			print_r($matches);
