@@ -240,7 +240,7 @@ Allow from 127.0.0.1
 
 		<!-- Trigger /dev/build for the new system -->
 		<echo>Running dev/build with flush and permission disabling</echo>
-		<exec command="php framework/cli-script.php dev/build flush=1 disable_perms=1" passthru="true" checkreturn="true" />
+		<exec command="php vendor/silverstripe/framework/cli-script.php dev/build flush=1 disable_perms=1" passthru="true" checkreturn="true" />
 	</target>
 
 	<target name="apply_patches">
@@ -384,8 +384,6 @@ Allow from 127.0.0.1
 				<exclude name="**/.git/**" />
 				<exclude name="phpunit.*" />
 				<exclude name="assets/**" />
-				<exclude name="cms/**" />
-				<exclude name="framework/**" />
 				<exclude name="silverstripe-cache/" />
 			</fileset>
 		</tar>
@@ -431,7 +429,7 @@ To restore this backup:
 * Import the database file in backups/${phing.project.name}.sql
 * Copy configs/silverstripe/.env.sample to .env
 * Edit DB settings in .env as appropriate (typically, use MySQLDatabase as the db.type)
-* Run 'php framework/cli-script.php dev/build'
+* Run 'php vendor/silverstripe/framework/cli-script.php dev/build'
 		</echo>
 		<mkdir dir="${backup.dir}" />
 		<echo file="${backup.dir}/.htaccess" append="false">
@@ -443,7 +441,7 @@ Deny from all
 
 	<target name="ci_test" depends="build">
 		<!-- lets get rid of files that we don't want tested -->
-		<delete file="${project.basedir}/framework/tests/WebserverRoutingTest.php" />
+		<delete file="${project.basedir}/vendor/silverstripe/framework/tests/WebserverRoutingTest.php" />
 		<property name="flush" value="1" override="true" />
 		<property name="build" value="1" override="true" />
 		<phingcall target="test" />

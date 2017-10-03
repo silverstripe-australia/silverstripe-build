@@ -83,22 +83,21 @@ Header set X-Content-Type-Options "nosniff"
 	SetEnvIfNoCase Request_URI \.(?:exe|t?gz|zip|gz2|sit|rar)$ no-gzip dont-vary
 </IfModule>
 
-<IfModule mod_alias.c>
-	RedirectMatch 403 ^/silverstripe-cache(/|$)
-	RedirectMatch 403 ^/vendor(/|$)
-	RedirectMatch 403 ^/composer\.(json|lock)
-</IfModule>
-
 <IfModule mod_rewrite.c>
 	SetEnv HTTP_MOD_REWRITE On
 	RewriteEngine On
 
+	# Deny access to vendor, unless you're requesting main.php
+	# Not restricting to the start of the path to support RewriteBase
+	RewriteCond %{REQUEST_URI} !^/vendor/silverstripe/framework/main\.php
 	RewriteRule ^vendor(/|$) - [F,L,NC]
+
 	RewriteRule ^silverstripe-cache(/|$) - [F,L,NC]
 	RewriteRule ^composer\.(json|lock) - [F,L,NC]
+	RewriteRule (error|silverstripe|debug)\.log - [F,L,NC]
 
 	RewriteCond %{REQUEST_URI} ^(.*)$
 	RewriteCond %{REQUEST_FILENAME} !-f
-	RewriteRule .* framework/main.php?url=%1&%{QUERY_STRING} [L]
+	RewriteRule .* vendor/silverstripe/framework/main.php?url=%1&%{QUERY_STRING} [L]
 </IfModule>
 ### SILVERSTRIPE END ###
