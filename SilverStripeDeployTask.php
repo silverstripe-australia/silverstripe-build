@@ -87,7 +87,6 @@ class SilverStripeDeployTask extends SilverStripeBuildTask {
 			$this->execute("rsync -rl --exclude=silverstripe-cache $currentPath/* $releasePath/");
 
 			$this->log("Copying configs");
-			$this->execute("cp $releasePath/mysite/.assets-htaccess $releasePath/assets/.htaccess");
 			$this->execute("cp $currentPath/.htaccess $releasePath/");
 			$this->execute("cp $currentPath/.env $releasePath/.env");
 
@@ -141,7 +140,6 @@ class SilverStripeDeployTask extends SilverStripeBuildTask {
 
 			$this->log("Copying site assets");
 			$this->execute("rsync -rl $currentPath/assets $releasePath/");
-			$this->execute("cp $releasePath/mysite/.assets-htaccess $releasePath/assets/.htaccess");
 		}
 
 		$this->log("Pre-deploy");
