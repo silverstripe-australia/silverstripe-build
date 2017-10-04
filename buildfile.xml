@@ -138,17 +138,6 @@ Other features
 	
 	<!-- default config file set -->
 	<target name="default_configs" description="Ensure default configuration files are available">
-		<!-- if assets folder doesn't exist, create it and the default .htaccess -->
-		<mkdir dir="assets" />
-		<if>
-			<not><available file="assets/.htaccess" /></not>
-			<then>
-				<echo file="assets/.htaccess" append="false">
-RemoveHandler .php .phtml .php3 .php4 .php5 .inc
-RemoveType .php .phtml .php3 .php4 .php5 .inc
-				</echo>
-			</then>
-		</if>
 		<!-- Copy the DB configs -->
 		<if>
 			<not><os family="windows" /></not>
