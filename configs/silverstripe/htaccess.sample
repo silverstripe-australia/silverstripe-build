@@ -87,17 +87,16 @@ Header set X-Content-Type-Options "nosniff"
 	SetEnv HTTP_MOD_REWRITE On
 	RewriteEngine On
 
-	# Deny access to vendor, unless you're requesting main.php
-	# Not restricting to the start of the path to support RewriteBase
-	RewriteCond %{REQUEST_URI} !^/vendor/silverstripe/framework/main\.php
 	RewriteRule ^vendor(/|$) - [F,L,NC]
-
 	RewriteRule ^silverstripe-cache(/|$) - [F,L,NC]
 	RewriteRule ^composer\.(json|lock) - [F,L,NC]
 	RewriteRule (error|silverstripe|debug)\.log - [F,L,NC]
 
+	# Process through SilverStripe if no file with the requested name exists.
+	# Pass through the original path as a query parameter, and retain the existing parameters.
+	# Try finding framework in the vendor folder first
 	RewriteCond %{REQUEST_URI} ^(.*)$
 	RewriteCond %{REQUEST_FILENAME} !-f
-	RewriteRule .* vendor/silverstripe/framework/main.php?url=%1&%{QUERY_STRING} [L]
+	RewriteRule .* index.php
 </IfModule>
 ### SILVERSTRIPE END ###
