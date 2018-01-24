@@ -1,3 +1,7 @@
+---
+Name: local-default
+---
+
 # This is used to configure the permissions for assets, specifically when building from the command line.
 
 SilverStripe\Assets\Flysystem\PublicAssetAdapter:
@@ -11,3 +15,6 @@ SilverStripe\Assets\Flysystem\ProtectedAssetAdapter:
   server_configuration:
     php:
       '.htaccess': "SilverStripe\\Assets\\Flysystem\\ProtectedAssetAdapter_HTAccess"
+---
+Name: local-custom
+---
