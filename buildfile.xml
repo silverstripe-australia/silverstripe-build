@@ -288,6 +288,7 @@ Allow from 127.0.0.1
 				<exclude name="**/README*" />
 				<exclude name="composer.phar" />
 				<exclude name="themes/**/node_modules/**" />
+                <exclude name="install.*" />
 			</fileset>
 		</tar>
 	</target>
@@ -376,6 +377,7 @@ Allow from 127.0.0.1
 				<exclude name="assets/**" />
 				<exclude name="silverstripe-cache/" />
                 <exclude name="themes/**/node_modules/**" />
+                <exclude name="install.*" />
 			</fileset>
 		</tar>
 		<chmod file="${build.output.dir}/${update-package.name}" mode="0664" />
