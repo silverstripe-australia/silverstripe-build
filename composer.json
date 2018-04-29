@@ -14,10 +14,7 @@
 		"silverstripe/framework": "~3.1"
 	},
 	"extra": {
-		"installer-name": "build",
-		"branch-alias": {
-			"dev-master": "3.1.x-dev"
-		}
+		"installer-name": "build"
 	},
 	"replace": {
 		"silverstripe-australia/build": "self.version"
