@@ -283,6 +283,11 @@ Allow from 127.0.0.1
 				<exclude name="**/.buildpath" />
 				<exclude name="**/.settings" />
 				<exclude name="phpunit.*" />
+				<exclude name="**/phpunit.*" />
+				<exclude name="phpcs.*" />
+				<exclude name="**/phpcs.*" />
+				<exclude name="*.neon"/>		<!-- Exclude root .neon config files (used by PHPStan) -->
+				<exclude name="**/*.neon"/> 	<!-- Exclude all .neon files in subdirectories/modules (used by PHPStan) -->
 				<exclude name="**/*.rej" />
 				<exclude name="**/*.orig" />
 				<exclude name="**/README*" />
@@ -374,7 +379,9 @@ Allow from 127.0.0.1
 				<exclude name="**/.settings" />
 				<exclude name="**/.git/**" />
 				<exclude name="phpunit.*" />
+				<exclude name="**/phpunit.*" />
 				<exclude name="phpcs.*" />
+				<exclude name="**/phpcs.*" />
 				<exclude name="*.neon"/>		<!-- Exclude root .neon config files (used by PHPStan) -->
 				<exclude name="**/*.neon"/> 	<!-- Exclude all .neon files in subdirectories/modules (used by PHPStan) -->
 				<exclude name="assets/**" />
