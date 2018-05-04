@@ -374,6 +374,9 @@ Allow from 127.0.0.1
 				<exclude name="**/.settings" />
 				<exclude name="**/.git/**" />
 				<exclude name="phpunit.*" />
+				<exclude name="phpcs.*" /> 
+				<exclude name="*.neon"/>		<!-- Exclude root .neon config files (used by PHPStan) -->
+				<exclude name="**/*.neon"/> 	<!-- Exclude all .neon files in subdirectories/modules (used by PHPStan) -->
 				<exclude name="assets/**" />
 				<exclude name="silverstripe-cache/" />
                 <exclude name="themes/**/node_modules/**" />
