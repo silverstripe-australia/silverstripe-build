@@ -294,6 +294,8 @@ Allow from 127.0.0.1
 				<exclude name="composer.phar" />
 				<exclude name="themes/**/node_modules/**" />
                 <exclude name="install.*" />
+                <exclude name="docker-compose.*" />
+                <exclude name="*.sh" />
 			</fileset>
 		</tar>
 	</target>
@@ -388,6 +390,8 @@ Allow from 127.0.0.1
 				<exclude name="silverstripe-cache/" />
                 <exclude name="themes/**/node_modules/**" />
                 <exclude name="install.*" />
+                <exclude name="docker-compose.*" />
+                <exclude name="*.sh" />
 			</fileset>
 		</tar>
 		<chmod file="${build.output.dir}/${update-package.name}" mode="0664" />
