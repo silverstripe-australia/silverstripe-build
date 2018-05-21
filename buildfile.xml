@@ -335,6 +335,8 @@ define('ENV_DEV', '1');
 				<exclude name="**/*.orig" />
 				<exclude name="**/README*" />
 				<exclude name="composer.phar" />
+                <exclude name="docker-compose.*" />
+                <exclude name="*.sh" />
 			</fileset>
 		</tar>
 	</target>
@@ -428,6 +430,8 @@ define('ENV_DEV', '1');
 				<exclude name="cms/**" />
 				<exclude name="framework/**" />
 				<exclude name="silverstripe-cache/" />
+                <exclude name="docker-compose.*" />
+                <exclude name="*.sh" />
 			</fileset>
 		</tar>
 		<chmod file="${build.output.dir}/${update-package.name}" mode="0664" />
