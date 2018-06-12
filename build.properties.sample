@@ -24,7 +24,7 @@ htaccess.config=build/configs/silverstripe/htaccess.sample
 rewrite.base=/silverstripe
 
 # DB information
-db.type=SQLite3Database
+db.type=MySQLPDODatabase
 db.user=dbuser
 db.pass=dbpass
 db.name=silverstripe
