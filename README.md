@@ -17,6 +17,18 @@ Installation
 * Run `phing -f scripts/build.xml test` to make sure everything's working as expected
 
 
+## Phing targets
+
+Commonly used targets
+
+* build
+* test
+* package
+
+Helpful for development: 
+
+* `pak` - builds a .sspak file at mysite/build/site.sspak . Useful for CI 
+
 ## Composer scripts
 
 If your themes use yarn based dependencies, you can add the following post-install 
