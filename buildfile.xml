@@ -251,6 +251,14 @@ Allow from 127.0.0.1
 		</if>
 	</target>
 
+	<target name="pak">
+		<delete file="mysite/build/site.sspak" />
+		<exec command="sspak save . mysite/build/site.sspak" passthru="true"  />
+	</target>
+
+	<target name="unpak">
+		<exec command="sspak load mysite/build/site.sspak ." passthru="true"  />
+	</target>
 
 	<!-- Create a deployable package to use as the base for installing a new site FROM SCRATCH.
 	Please use the update-package target for creating a package to use for an update -->
