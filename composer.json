@@ -14,10 +14,7 @@
 		"silverstripe/framework": "~4.0"
 	},
 	"extra": {
-		"installer-name": "build",
-		"branch-alias": {
-			"dev-master": "4.0.x-dev"
-		}
+		"installer-name": "build"
 	},
 	"autoload": {
 		"psr-4": {
