@@ -28,6 +28,9 @@ Commonly used targets
 Helpful for development: 
 
 * `pak` - builds a .sspak file at mysite/build/site.sspak . Useful for CI 
+* `phpstan` - Runs [PHPStan](https://github.com/phpstan/phpstan) + [PHPStan for SilverStripe](https://github.com/silbinarywolf/silverstripe-phpstan) if it's installed via Composer. Useful for static analysis of PHP code.
+    - Define folders to scan by placing following in your build.xml file, underneath the `<project>` tag.
+        - `<property name="phpstan.dir" value="mysite/src mysite/tests" />`
 
 ## Composer scripts
 

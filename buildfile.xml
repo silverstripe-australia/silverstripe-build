@@ -562,4 +562,83 @@ Deny from all
 		<mkdir dir="${build.output.dir}" />
 		<delete file="${database_dump.name}"></delete>
 	</target>
+
+	<target name="phpstan" depends="get-composer">
+        <!--
+            Example CLI use: `phing phpstan -Dphpstan.level=2`
+        -->
+        <if>
+            <available file="${project.basedir}/vendor/bin/phpstan" />
+            <then>
+                <property name="phpstan.installed" value="1" />
+            </then>
+        </if>
+        <if>
+            <available file="${project.basedir}/vendor/silbinarywolf/silverstripe-phpstan" type="dir" />
+            <then>
+                <property name="phpstan.silverstripe_installed" value="1" />
+            </then>
+        </if>
+        <if>
+            <isset property="phpstan.debug"/>
+            <then>
+                <property name="phpstan.debug_cmd" value="--debug" />
+            </then>
+            <else>
+                <property name="phpstan.debug_cmd" value="" />
+            </else>
+        </if>
+
+        <if>
+            <not><isset property="phpstan.disabled"/></not>
+            <then>
+                <!-- Run PHPStan if installed -->
+                <if>
+                    <isset property="phpstan.installed"/>
+                    <then>
+                        <if>
+                            <isset property="phpstan.silverstripe_installed"/>
+                            <then>
+                                <!-- Default values -->
+                                <if>
+                                    <not><isset property="phpstan.level" /></not>
+                                    <then>
+                                        <property name="phpstan.level" value="2" />
+                                    </then>
+                                </if>
+                                <if>
+                                    <not><isset property="phpstan.dir" /></not>
+                                    <then>
+                                        <property name="phpstan.dir" value="mysite" />
+                                    </then>
+                                </if>
+                                <!-- Run PHPStan -->
+                                <exec executable="vendor/bin/phpstan"
+                                      passthru="true"
+                                      checkreturn="true"
+                                >
+                                    <arg value="analyse" />
+                                    <arg line="${phpstan.dir}" />
+                                    <arg line="-c phpstan.neon" />
+                                    <arg line="-a vendor/silbinarywolf/silverstripe-phpstan/bootstrap.php" />
+                                    <arg line="--errorFormat table" />
+                                    <arg line="--level ${phpstan.level}"/>
+                                    <arg line="${phpstan.debug_cmd}"/>
+                                </exec>
+                            </then>
+                            <else>
+                                <echo msg="PHPStan SilverStripe extension is not installed in this project and was not executed." />
+                            </else>
+                        </if>
+                    </then>
+                    <else>
+                        <echo msg="PHPStan is not installed in this project and was not executed." />
+                    </else>
+                </if>
+            </then>
+            <else>
+                <echo msg="PHPStan has been disabled via the 'phpstan.disabled' property." />
+            </else>
+        </if>
+    </target>
 </project>
