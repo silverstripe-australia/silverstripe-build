@@ -563,7 +563,7 @@ Deny from all
 		<delete file="${database_dump.name}"></delete>
 	</target>
 
-	<target name="phpstan" depends="get-composer">
+	<target name="phpstan">
         <!--
             Example CLI use: `phing phpstan -Dphpstan.level=2`
         -->
