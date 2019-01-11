@@ -212,6 +212,7 @@ Allow from 127.0.0.1
 		<delete file="${project.basedir}/build/build.properties" />
 		<copy tofile="${project.basedir}/build/build.properties" file="${project.basedir}/build/build.properties.sample" />
 		<delete dir="assets" />
+		<delete dir="public/assets" />
 		<delete file="${project.basedir}/.env" />
 		<delete file="${project.basedir}/mysite/_config/local.yml" />
 		<property name="properties_exist" value="true" override="true" />
@@ -273,6 +274,7 @@ Allow from 127.0.0.1
 				<exclude name="silverstripe-cache/" />
 				<exclude name="sitemap.xml" />
 				<exclude name="assets/**" />
+				<exclude name="public/assets/**" />
 				<exclude name="test-assist/" />
 				<exclude name="build/" />
 				<exclude name="build.xml" />
@@ -395,6 +397,7 @@ Allow from 127.0.0.1
 				<exclude name="*.neon"/>		<!-- Exclude root .neon config files (used by PHPStan) -->
 				<exclude name="**/*.neon"/> 	<!-- Exclude all .neon files in subdirectories/modules (used by PHPStan) -->
 				<exclude name="assets/**" />
+				<exclude name="public/assets/**" />
 				<exclude name="silverstripe-cache/" />
                 <exclude name="themes/**/node_modules/**" />
                 <exclude name="install.*" />
