@@ -5,12 +5,14 @@
 #
 ########################################################################
 
+# The project code folder. SS3 uses mysite, and SS4's default is app.
+project.root=mysite
 
 # Where should the modules be retrieved from?
 # This reads and loads the modules one by one to remove any problems
 # with dependencies between modules. Just make sure they're
 # in the file in the order they should be loaded...
-modules.depends.file=mysite/build/dependent-modules
+modules.depends.file=${project.root}/build/dependent-modules
 
 # The core modules for silverstripe
 modules.core.file=build/core-modules
@@ -48,7 +50,7 @@ git.branch=master
 
 build.output.dir=build
 build.archive.dir=${build.output.dir}/archive
-patches.dir=mysite/build/patches
+patches.dir=${project.root}/build/patches
 
 # Module package information
 module.name=${phing.project.name}

@@ -33,6 +33,9 @@
 	<echo>${git.branch}</echo>
 
 	<property file="${project.basedir}/build/build.properties"></property>
+	<!-- To maintain backwards compatibility, we must default project.root to mysite, even if not
+	present in build.properties, since this used to be hardcoded. -->
+	<property name="project.root" value="mysite" />
 
 	<if>
 		<isset property="env.GIT_COMMIT" />
@@ -144,7 +147,7 @@ Other features
 			<then>
 				<echo>Touching configs if they exist</echo>
 				<exec command="touch -c .env" checkreturn="true" />
-				<exec command="touch -c mysite/_config/local.yml" checkreturn="true" />
+				<exec command="touch -c ${project.root}/_config/local.yml" checkreturn="true" />
 				<exec command="touch -c test-assist/artifacts/html/.htaccess" checkreturn="true" />
 				<exec command="touch -c .htaccess" checkreturn="true" />
 			</then>
@@ -154,8 +157,8 @@ Other features
 		replacement, we use that -->
 		<property name="config_prefix" value="" />
 		<if>
-			<available file="mysite/${local.php.config}" />
-			<then><property name="config_prefix" value="mysite/" override="true" /></then>
+			<available file="${project.root}/${local.php.config}" />
+			<then><property name="config_prefix" value="${project.root}/" override="true" /></then>
 		</if>
 		<echo>local.php prefix = ${config_prefix}</echo>
 		<if>
@@ -171,11 +174,11 @@ Other features
 
 		<property name="config_prefix" value="" override="true" />
 		<if>
-			<available file="mysite/${local.yml.config}" />
-			<then><property name="config_prefix" value="mysite/" override="true" /></then>
+			<available file="${project.root}/${local.yml.config}" />
+			<then><property name="config_prefix" value="${project.root}/" override="true" /></then>
 		</if>
 		<echo>local.yml prefix = ${config_prefix}</echo>
-		<copy tofile="mysite/_config/local.yml" file="${config_prefix}${local.yml.config}" overwrite="false">
+		<copy tofile="${project.root}/_config/local.yml" file="${config_prefix}${local.yml.config}" overwrite="false">
 			<filterchain>
 				<expandproperties />
 			</filterchain>
@@ -194,8 +197,8 @@ Allow from 127.0.0.1
 
 		<property name="config_prefix" value="" override="true" />
 		<if>
-			<available file="mysite/${htaccess.config}" />
-			<then><property name="config_prefix" value="mysite/" override="true" /></then>
+			<available file="${project.root}/${htaccess.config}" />
+			<then><property name="config_prefix" value="${project.root}/" override="true" /></then>
 		</if>
 		<!-- Copy the htaccess -->
 		<copy tofile=".htaccess" file="${config_prefix}${htaccess.config}" overwrite="false">
@@ -214,7 +217,7 @@ Allow from 127.0.0.1
 		<delete dir="assets" />
 		<delete dir="public/assets" />
 		<delete file="${project.basedir}/.env" />
-		<delete file="${project.basedir}/mysite/_config/local.yml" />
+		<delete file="${project.basedir}/${project.root}/_config/local.yml" />
 		<property name="properties_exist" value="true" override="true" />
 		<property file="${project.basedir}/build/build.properties"></property>
 		<mkdir dir="${project.basedir}/silverstripe-cache" />
@@ -222,7 +225,7 @@ Allow from 127.0.0.1
 
 	<!-- Installs a freshly checked-out silverstripe project -->
 	<target name="build" depends="init,default_configs">
-		<echo file="mysite/BUILD_NUMBER" append="false">Build ${BUILD_STAMP}</echo>
+		<echo file="${project.root}/BUILD_NUMBER" append="false">Build ${BUILD_STAMP}</echo>
 
 		<phingcall target="update-composer" />
 		<phingcall target="update_modules" />
@@ -253,12 +256,12 @@ Allow from 127.0.0.1
 	</target>
 
 	<target name="pak">
-		<delete file="mysite/build/site.sspak" />
-		<exec command="sspak save . mysite/build/site.sspak" passthru="true"  />
+		<delete file="${project.root}/build/site.sspak" />
+		<exec command="sspak save . ${project.root}/build/site.sspak" passthru="true"  />
 	</target>
 
 	<target name="unpak">
-		<exec command="sspak load mysite/build/site.sspak ." passthru="true"  />
+		<exec command="sspak load ${project.root}/build/site.sspak ." passthru="true"  />
 	</target>
 
 	<!-- Create a deployable package to use as the base for installing a new site FROM SCRATCH.
@@ -279,11 +282,11 @@ Allow from 127.0.0.1
 				<exclude name="build/" />
 				<exclude name="build.xml" />
 				<exclude name=".env" />
-				<exclude name="mysite/local.conf.php" />
-				<exclude name="mysite/_config/local.yml" />
-				<exclude name="mysite/db.conf.php" />
-				<exclude name="mysite/*.log" />
-				<exclude name="mysite/build/**" />
+				<exclude name="${project.root}/local.conf.php" />
+				<exclude name="${project.root}/_config/local.yml" />
+				<exclude name="${project.root}/db.conf.php" />
+				<exclude name="${project.root}/*.log" />
+				<exclude name="${project.root}/build/**" />
 				<exclude name="**/.svn/**" />
 				<exclude name="**/.git/**" />
 				<exclude name="nbproject/**" />
@@ -374,14 +377,14 @@ Allow from 127.0.0.1
 			<fileset dir="${project.basedir}">
 				<include name="**/**" />
 				<exclude name="sitemap.xml" />
-				<exclude name="mysite/db.conf.php" />
+				<exclude name="${project.root}/db.conf.php" />
 				<exclude name=".env" />
 				<exclude name="_ss_environment.php" />
-				<exclude name="mysite/local.conf.php" />
-				<exclude name="mysite/_config/local.yml" />
-				<exclude name="mysite/*.log" />
+				<exclude name="${project.root}/local.conf.php" />
+				<exclude name="${project.root}/_config/local.yml" />
+				<exclude name="${project.root}/*.log" />
 				<exclude name="build/**" />
-				<exclude name="mysite/build/**" />
+				<exclude name="${project.root}/build/**" />
 				<exclude name="build.xml" />
 				<exclude name=".htaccess" />
 				<exclude name="**/.svn/**" />
@@ -554,6 +557,7 @@ Deny from all
 			ignoreerrors="${deploy.first}"
 			incremental="${deploy.incremental}"
 			localpath="${build.output.dir}"
+			apppath="${project.root}"
 			remotepath="${deploy.${deptarget}.path}"
 			package="${deploy.package}"
 			apachegroup="${deploy.${deptarget}.apache-group}"
@@ -612,7 +616,7 @@ Deny from all
                                 <if>
                                     <not><isset property="phpstan.dir" /></not>
                                     <then>
-                                        <property name="phpstan.dir" value="mysite" />
+                                        <property name="phpstan.dir" value="${project.root}" />
                                     </then>
                                 </if>
                                 <!-- Run PHPStan -->

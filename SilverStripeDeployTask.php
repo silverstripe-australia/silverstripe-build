@@ -11,6 +11,7 @@ class SilverStripeDeployTask extends SilverStripeBuildTask {
 	/* deployment config */
 
 	private $localpath;
+	private $apppath;
 	private $package = '';
 	private $apachegroup = 'apache';
 	private $remotepath = '';
@@ -93,12 +94,12 @@ class SilverStripeDeployTask extends SilverStripeBuildTask {
 			// These are legacy, but remain to support older projects.
 
 			$this->execute("cp $currentPath/_ss_environment.php $releasePath/");
-			$this->execute("cp $currentPath/mysite/local.conf.php $releasePath/mysite/local.conf.php");
+			$this->execute("cp $currentPath/$this->apppath/local.conf.php $releasePath/$this->apppath/local.conf.php");
 
 			// ---
 			
-			$localConf = "$currentPath/mysite/_config/local.yml";
-			$cmd = "if [ -f $localConf ]; then cp $localConf $releasePath/mysite/_config/; fi";
+			$localConf = "$currentPath/$this->apppath/_config/local.yml";
+			$cmd = "if [ -f $localConf ]; then cp $localConf $releasePath/$this->apppath/_config/; fi";
 			$this->execute($cmd);
 		}
 	}
@@ -130,12 +131,12 @@ class SilverStripeDeployTask extends SilverStripeBuildTask {
 			// These are legacy, but remain to support older projects.
 
 			$this->execute("cp $currentPath/_ss_environment.php $releasePath/");
-			$this->execute("cp $currentPath/mysite/local.conf.php $releasePath/mysite/local.conf.php");
+			$this->execute("cp $currentPath/$this->apppath/local.conf.php $releasePath/$this->apppath/local.conf.php");
 
 			// ---
 
-			$localConf = "$currentPath/mysite/_config/local.yml";
-			$cmd = "if [ -f $localConf ]; then cp $localConf $releasePath/mysite/_config/; fi";
+			$localConf = "$currentPath/$this->apppath/_config/local.yml";
+			$cmd = "if [ -f $localConf ]; then cp $localConf $releasePath/$this->apppath/_config/; fi";
 			$this->execute($cmd);
 
 			$this->log("Copying site assets");
@@ -143,16 +144,16 @@ class SilverStripeDeployTask extends SilverStripeBuildTask {
 		}
 
 		$this->log("Pre-deploy");
-		$this->executeOptionalPhpScript($releasePath .'/mysite/scripts/pre_deploy.php');
+		$this->executeOptionalPhpScript($releasePath .'/'. $this->apppath .'/scripts/pre_deploy.php');
 
 		$this->log("Backing up database");
-		$this->execute("php $currentPath/mysite/scripts/backup_database.php");
+		$this->execute("php $currentPath/$this->apppath/scripts/backup_database.php");
 		
 		$this->log("Saving .htaccess");
-		$this->execute("cp $releasePath/.htaccess $releasePath/mysite/.htaccess.bak");
+		$this->execute("cp $releasePath/.htaccess $releasePath/$this->apppath/.htaccess.bak");
 		
 		$this->log("Checking for maintenance mode, and switching if found");
-		$maintenanceHtaccess = "$releasePath/mysite/.htaccess-maintenance";
+		$maintenanceHtaccess = "$releasePath/$this->apppath/.htaccess-maintenance";
 		$cmd = "if [ -f $maintenanceHtaccess ]; then cp $maintenanceHtaccess $currentPath/.htaccess; fi";
 		$this->execute($cmd);
 		$cmd = "if [ -f $maintenanceHtaccess ]; then cp $maintenanceHtaccess $releasePath/.htaccess; fi";
@@ -171,7 +172,7 @@ class SilverStripeDeployTask extends SilverStripeBuildTask {
 		}
 
 		$this->log("Restoring .htaccess");
-		$htaccessBak = "$releasePath/mysite/.htaccess.bak";
+		$htaccessBak = "$releasePath/$this->apppath/.htaccess.bak";
 		$cmd = "if [ -f $htaccessBak ]; then cp $htaccessBak $releasePath/.htaccess; fi";
 		$this->execute($cmd);
 
@@ -187,7 +188,7 @@ class SilverStripeDeployTask extends SilverStripeBuildTask {
 	 * @param type $currentPath 
 	 */
 	public function preLinkSwitch($releasePath) {
-		$this->executeOptionalPhpScript($releasePath .'/mysite/scripts/pre_switch.php', dirname($releasePath));
+		$this->executeOptionalPhpScript($releasePath .'/'. $this->apppath .'/scripts/pre_switch.php', dirname($releasePath));
 
 		$this->log("Setting silverstripe-cache permissions");
 		$this->execute("chgrp -R $this->apachegroup $releasePath/silverstripe-cache", true);
@@ -203,7 +204,7 @@ class SilverStripeDeployTask extends SilverStripeBuildTask {
 	 */
 	public function postDeploy($releasePath) {
 		$arg = dirname($releasePath);
-		$this->executeOptionalPhpScript($releasePath .'/mysite/scripts/post_deploy.php', $arg);
+		$this->executeOptionalPhpScript($releasePath .'/'. $this->apppath .'/scripts/post_deploy.php', $arg);
 
 		$this->log("Fixing permissions");
 		// force silverstripe-cache permissions first before the rest. 
@@ -215,7 +216,7 @@ class SilverStripeDeployTask extends SilverStripeBuildTask {
 		$this->execute("find $releasePath -type f -exec chmod 664 {} \;", true);
 		$this->execute("find $releasePath -type d -exec chmod 2775 {} \;", true);
 		
-		$this->executeOptionalPhpScript($releasePath .'/mysite/scripts/finalise_deployment.php', dirname($releasePath));
+		$this->executeOptionalPhpScript($releasePath .'/'. $this->apppath .'/scripts/finalise_deployment.php', dirname($releasePath));
 	}
 	
 	protected function executeOptionalPhpScript($script) {
@@ -330,6 +331,14 @@ class SilverStripeDeployTask extends SilverStripeBuildTask {
 
 	public function getLocalpath() {
 		return $this->localpath;
+	}
+
+	public function setApppath($p) {
+		$this->apppath = $p;
+	}
+
+	public function getApppath() {
+		return $this->apppath;
 	}
 
 	public function setRemotepath($p) {
