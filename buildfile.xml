@@ -281,7 +281,9 @@ Allow from 127.0.0.1
 				<exclude name="test-assist/" />
 				<exclude name="build/" />
 				<exclude name="build.xml" />
-				<exclude name=".env" />
+				<exclude name="**/*.env" />
+				<exclude name=".gitlab-ci.yml" />
+				<exclude name="**/*dockerfile*" />
 				<exclude name="${project.root}/local.conf.php" />
 				<exclude name="${project.root}/_config/local.yml" />
 				<exclude name="${project.root}/db.conf.php" />
@@ -378,7 +380,9 @@ Allow from 127.0.0.1
 				<include name="**/**" />
 				<exclude name="sitemap.xml" />
 				<exclude name="${project.root}/db.conf.php" />
-				<exclude name=".env" />
+				<exclude name="**/*.env" />
+				<exclude name=".gitlab-ci.yml" />
+				<exclude name="**/*dockerfile*" />
 				<exclude name="_ss_environment.php" />
 				<exclude name="${project.root}/local.conf.php" />
 				<exclude name="${project.root}/_config/local.yml" />
