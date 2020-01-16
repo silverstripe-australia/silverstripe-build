@@ -21,14 +21,15 @@ Name: local-custom
 
 
 ---
-Name: dev_log
-Before:
-  - '*'
+Name: ss-log-file
 ---
 SilverStripe\Core\Injector\Injector:
+  Psr\Log\LoggerInterface:
+    calls:
+      LogFileHandler: [ pushHandler, [ %$LogFileHandler ] ]
   LogFileHandler:
     class: Monolog\Handler\StreamHandler
     constructor:
-      - "mysite/silverstripe.log"
+      - "/var/log/silverstripe/silverstripe.log"
       - "info"
-
+    
