@@ -632,7 +632,7 @@ Deny from all
                                     <arg line="${phpstan.dir}" />
                                     <arg line="-c phpstan.neon" />
                                     <arg line="-a vendor/symbiote/silverstripe-phpstan/bootstrap.php" />
-                                    <arg line="--errorFormat table" />
+                                    <arg line="--error-format table" />
                                     <arg line="--level ${phpstan.level}"/>
                                     <arg line="${phpstan.debug_cmd}"/>
                                 </exec>
