@@ -585,7 +585,7 @@ Deny from all
             </then>
         </if>
         <if>
-            <available file="${project.basedir}/vendor/silbinarywolf/silverstripe-phpstan" type="dir" />
+            <available file="${project.basedir}/vendor/symbiote/silverstripe-phpstan" type="dir" />
             <then>
                 <property name="phpstan.silverstripe_installed" value="1" />
             </then>
@@ -631,7 +631,7 @@ Deny from all
                                     <arg value="analyse" />
                                     <arg line="${phpstan.dir}" />
                                     <arg line="-c phpstan.neon" />
-                                    <arg line="-a vendor/silbinarywolf/silverstripe-phpstan/bootstrap.php" />
+                                    <arg line="-a vendor/symbiote/silverstripe-phpstan/bootstrap.php" />
                                     <arg line="--errorFormat table" />
                                     <arg line="--level ${phpstan.level}"/>
                                     <arg line="${phpstan.debug_cmd}"/>
