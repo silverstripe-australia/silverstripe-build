@@ -200,12 +200,26 @@ Allow from 127.0.0.1
 			<available file="${project.root}/${htaccess.config}" />
 			<then><property name="config_prefix" value="${project.root}/" override="true" /></then>
 		</if>
-		<!-- Copy the htaccess -->
-		<copy tofile=".htaccess" file="${config_prefix}${htaccess.config}" overwrite="false">
-			<filterchain>
-				<expandproperties />
-			</filterchain>
-		</copy>
+		<!-- Copy the htaccess - checking for public directory layout -->
+		<if>
+			<available file="public" type="dir" />
+			<then>
+				<exec command="touch -c public/.htaccess" checkreturn="true" />
+				<copy tofile="public/.htaccess" file="${config_prefix}${htaccess.config}" overwrite="false">
+					<filterchain>
+						<expandproperties />
+					</filterchain>
+				</copy>
+				<copy tofile=".htaccess" file="${config_prefix}${htaccess-root-public.config}" overwrite="false" />
+			</then>
+			<else>
+				<copy tofile=".htaccess" file="${config_prefix}${htaccess.config}" overwrite="false">
+					<filterchain>
+						<expandproperties />
+					</filterchain>
+				</copy>
+			</else>
+		</if>
 	</target>
 
 	<!-- A target that gets executed if the 'ni_build' parameter is set. This is done when
