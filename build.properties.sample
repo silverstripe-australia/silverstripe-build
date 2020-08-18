@@ -20,6 +20,7 @@ modules.core.file=build/core-modules
 local.php.config=build/configs/silverstripe/.env.sample
 local.yml.config=build/configs/silverstripe/local.sample.yml
 htaccess.config=build/configs/silverstripe/htaccess.sample
+htaccess-root-public.config=build/configs/silverstripe/htaccess-root-public.sample
 
 # change this to the value that appears AFTER the TLD in your url
 # the below matches http://localhost/silverstripe
