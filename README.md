@@ -32,6 +32,7 @@ Helpful for development:
     - Define folders to scan by placing following in your build.xml file, underneath the `<project>` tag.
         - `<property name="phpstan.dir" value="mysite/src mysite/tests" />`
 
+
 ## Composer scripts
 
 If your themes use yarn based dependencies, you can add the following post-install 
@@ -69,3 +70,15 @@ This will recursively trigger a "git status" on each module directory found with
 ### sh build/scripts/recursive-status assume-unchanged-listing
 
 When you have patched files (resulting in them coming up as being modified during a recursive-status), you can `git update-index --assume-unchanged {file_name}`, and use this script with a parameter. This will not only list out the files that have been assumed unchanged, but it will also force the files to reflect the upstream. This makes sure you don't have local changes that have been accidentally made, however it will also remove any patches that were put in place. Therefore, you can run this and then `phing` to ensure the patches remain in place.
+
+
+## Excluding files from packages
+
+Create a {root}/.pkgignore file with a set of paths to be excluded from built up package files
+
+```
+vendor/un-used/module/
+themes/mytheme/node_modules/
+mysite/cypress/
+
+```
