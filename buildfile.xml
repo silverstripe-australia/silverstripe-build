@@ -99,12 +99,12 @@ Other features
 
 	<!-- Load modules where sensitive dependency exists -->
 	<target name="update_modules" depends="create_modules_file">
-        <if>
-            <available file="${modules.depends.file}.default" />
-            <then>
-                <ssmodules file="${modules.depends.file}" noninteractive="${ni_build}"/>
-            </then>
-        </if>
+		<if>
+			<available file="${modules.depends.file}.default" />
+			<then>
+				<ssmodules file="${modules.depends.file}" noninteractive="${ni_build}"/>
+			</then>
+		</if>
 
 	</target>
 
@@ -114,12 +114,12 @@ Other features
 	</target>
 
 	<target name="create_modules_file" unless="modules_file_exists">
-        <if>
-            <available file="${modules.depends.file}.default" />
-            <then>
-                <copy file="${modules.depends.file}.default" tofile="${modules.depends.file}" />
-            </then>
-        </if>
+		<if>
+			<available file="${modules.depends.file}.default" />
+			<then>
+				<copy file="${modules.depends.file}.default" tofile="${modules.depends.file}" />
+			</then>
+		</if>
 
 	</target>
 
@@ -143,7 +143,9 @@ Other features
 	<target name="default_configs" description="Ensure default configuration files are available">
 		<!-- Copy the DB configs -->
 		<if>
-			<not><os family="windows" /></not>
+			<not>
+				<os family="windows" />
+			</not>
 			<then>
 				<echo>Touching configs if they exist</echo>
 				<exec command="touch -c .env" checkreturn="true" />
@@ -158,11 +160,15 @@ Other features
 		<property name="config_prefix" value="" />
 		<if>
 			<available file="${project.root}/${local.php.config}" />
-			<then><property name="config_prefix" value="${project.root}/" override="true" /></then>
+			<then>
+				<property name="config_prefix" value="${project.root}/" override="true" />
+			</then>
 		</if>
 		<echo>local.php prefix = ${config_prefix}</echo>
 		<if>
-			<not><available file=".env" /></not>
+			<not>
+				<available file=".env" />
+			</not>
 			<then>
 				<copy tofile=".env" file="${config_prefix}${local.php.config}" overwrite="false">
 					<filterchain>
@@ -175,7 +181,9 @@ Other features
 		<property name="config_prefix" value="" override="true" />
 		<if>
 			<available file="${project.root}/${local.yml.config}" />
-			<then><property name="config_prefix" value="${project.root}/" override="true" /></then>
+			<then>
+				<property name="config_prefix" value="${project.root}/" override="true" />
+			</then>
 		</if>
 		<echo>local.yml prefix = ${config_prefix}</echo>
 		<copy tofile="${project.root}/_config/local.yml" file="${config_prefix}${local.yml.config}" overwrite="false">
@@ -186,7 +194,9 @@ Other features
 
 		<!-- set up the html report output dir with an htaccess -->
 		<if>
-			<not><available file="test-assist/artifacts/html/.htaccess" /></not>
+			<not>
+				<available file="test-assist/artifacts/html/.htaccess" />
+			</not>
 			<then>
 				<mkdir dir="test-assist/artifacts/html" />
 				<echo file="test-assist/artifacts/html/.htaccess" append="false">
@@ -198,7 +208,9 @@ Allow from 127.0.0.1
 		<property name="config_prefix" value="" override="true" />
 		<if>
 			<available file="${project.root}/${htaccess.config}" />
-			<then><property name="config_prefix" value="${project.root}/" override="true" /></then>
+			<then>
+				<property name="config_prefix" value="${project.root}/" override="true" />
+			</then>
 		</if>
 		<!-- Copy the htaccess - checking for public directory layout -->
 		<if>
@@ -271,11 +283,11 @@ Allow from 127.0.0.1
 
 	<target name="pak">
 		<delete file="${project.root}/build/site.sspak" />
-		<exec command="sspak save . ${project.root}/build/site.sspak" passthru="true"  />
+		<exec command="sspak save . ${project.root}/build/site.sspak" passthru="true" />
 	</target>
 
 	<target name="unpak">
-		<exec command="sspak load ${project.root}/build/site.sspak ." passthru="true"  />
+		<exec command="sspak load ${project.root}/build/site.sspak ." passthru="true" />
 	</target>
 
 	<!-- Create a deployable package to use as the base for installing a new site FROM SCRATCH.
@@ -315,16 +327,18 @@ Allow from 127.0.0.1
 				<exclude name="**/phpunit.*" />
 				<exclude name="phpcs.*" />
 				<exclude name="**/phpcs.*" />
-				<exclude name="*.neon"/>		<!-- Exclude root .neon config files (used by PHPStan) -->
-				<exclude name="**/*.neon"/> 	<!-- Exclude all .neon files in subdirectories/modules (used by PHPStan) -->
+				<exclude name="*.neon"/>
+				<!-- Exclude root .neon config files (used by PHPStan) -->
+				<exclude name="**/*.neon"/>
+				<!-- Exclude all .neon files in subdirectories/modules (used by PHPStan) -->
 				<exclude name="**/*.rej" />
 				<exclude name="**/*.orig" />
 				<exclude name="**/README*" />
 				<exclude name="composer.phar" />
 				<exclude name="themes/**/node_modules/**" />
-                <exclude name="install.*" />
-                <exclude name="docker-compose.*" />
-                <exclude name="*.sh" />
+				<exclude name="install.*" />
+				<exclude name="docker-compose.*" />
+				<exclude name="*.sh" />
 			</fileset>
 		</tar>
 	</target>
@@ -356,7 +370,7 @@ Allow from 127.0.0.1
 	</target>
 
 	<target name="gittest">
-	<echo>This thing ${git.branch}</echo>
+		<echo>This thing ${git.branch}</echo>
 	</target>
 
 	<!-- a package that includes all items that the phing build normally downloads, which can
@@ -415,15 +429,17 @@ Allow from 127.0.0.1
 				<exclude name="**/phpunit.*" />
 				<exclude name="phpcs.*" />
 				<exclude name="**/phpcs.*" />
-				<exclude name="*.neon"/>		<!-- Exclude root .neon config files (used by PHPStan) -->
-				<exclude name="**/*.neon"/> 	<!-- Exclude all .neon files in subdirectories/modules (used by PHPStan) -->
+				<exclude name="*.neon"/>
+				<!-- Exclude root .neon config files (used by PHPStan) -->
+				<exclude name="**/*.neon"/>
+				<!-- Exclude all .neon files in subdirectories/modules (used by PHPStan) -->
 				<exclude name="assets/**" />
 				<exclude name="public/assets/**" />
 				<exclude name="silverstripe-cache/" />
-                <exclude name="themes/**/node_modules/**" />
-                <exclude name="install.*" />
-                <exclude name="docker-compose.*" />
-                <exclude name="*.sh" />
+				<exclude name="themes/**/node_modules/**" />
+				<exclude name="install.*" />
+				<exclude name="docker-compose.*" />
+				<exclude name="*.sh" />
 			</fileset>
 		</tar>
 		<chmod file="${build.output.dir}/${update-package.name}" mode="0664" />
@@ -488,7 +504,9 @@ Deny from all
 
 	<target name="start_selenium">
 		<if>
-			<not><available file="test-assist/selenium.jar" /></not>
+			<not>
+				<available file="test-assist/selenium.jar" />
+			</not>
 			<then>
 				<exec command="curl http://selenium-release.storage.googleapis.com/2.45/selenium-server-standalone-2.45.0.jar -o test-assist/selenium.jar" passthru="true" checkreturn="true" />
 			</then>
@@ -565,21 +583,7 @@ Deny from all
 			</else>
 		</if>
 
-		<ssdeploy
-			username="${deploy.${deptarget}.user}"
-			password="${deploy.${deptarget}.pass}"
-			pubkeyfile="${deploy.${deptarget}.pubkey}"
-			privkeyfile="${deploy.${deptarget}.privkey}"
-			host="${deploy.${deptarget}.host}"
-			port="${deploy.${deptarget}.port}"
-			ignoreerrors="${deploy.first}"
-			incremental="${deploy.incremental}"
-			localpath="${build.output.dir}"
-			apppath="${project.root}"
-			remotepath="${deploy.${deptarget}.path}"
-			package="${deploy.package}"
-			apachegroup="${deploy.${deptarget}.apache-group}"
-		/>
+		<ssdeploy username="${deploy.${deptarget}.user}" password="${deploy.${deptarget}.pass}" pubkeyfile="${deploy.${deptarget}.pubkey}" privkeyfile="${deploy.${deptarget}.privkey}" host="${deploy.${deptarget}.host}" port="${deploy.${deptarget}.port}" ignoreerrors="${deploy.first}" incremental="${deploy.incremental}" localpath="${build.output.dir}" apppath="${project.root}" remotepath="${deploy.${deptarget}.path}" package="${deploy.package}" apachegroup="${deploy.${deptarget}.apache-group}" />
 
 	</target>
 
@@ -589,81 +593,84 @@ Deny from all
 	</target>
 
 	<target name="phpstan">
-        <!--
+		<!--
             Example CLI use: `phing phpstan -Dphpstan.level=2`
         -->
-        <if>
-            <available file="${project.basedir}/vendor/bin/phpstan" />
-            <then>
-                <property name="phpstan.installed" value="1" />
-            </then>
-        </if>
-        <if>
-            <available file="${project.basedir}/vendor/symbiote/silverstripe-phpstan" type="dir" />
-            <then>
-                <property name="phpstan.silverstripe_installed" value="1" />
-            </then>
-        </if>
-        <if>
-            <isset property="phpstan.debug"/>
-            <then>
-                <property name="phpstan.debug_cmd" value="--debug" />
-            </then>
-            <else>
-                <property name="phpstan.debug_cmd" value="" />
-            </else>
-        </if>
+		<if>
+			<available file="${project.basedir}/vendor/bin/phpstan" />
+			<then>
+				<property name="phpstan.installed" value="1" />
+			</then>
+		</if>
+		<if>
+			<available file="${project.basedir}/vendor/symbiote/silverstripe-phpstan" type="dir" />
+			<then>
+				<property name="phpstan.silverstripe_installed" value="1" />
+			</then>
+		</if>
+		<if>
+			<isset property="phpstan.debug"/>
+			<then>
+				<property name="phpstan.debug_cmd" value="--debug" />
+			</then>
+			<else>
+				<property name="phpstan.debug_cmd" value="" />
+			</else>
+		</if>
 
-        <if>
-            <not><isset property="phpstan.disabled"/></not>
-            <then>
-                <!-- Run PHPStan if installed -->
-                <if>
-                    <isset property="phpstan.installed"/>
-                    <then>
-                        <if>
-                            <isset property="phpstan.silverstripe_installed"/>
-                            <then>
-                                <!-- Default values -->
-                                <if>
-                                    <not><isset property="phpstan.level" /></not>
-                                    <then>
-                                        <property name="phpstan.level" value="2" />
-                                    </then>
-                                </if>
-                                <if>
-                                    <not><isset property="phpstan.dir" /></not>
-                                    <then>
-                                        <property name="phpstan.dir" value="${project.root}" />
-                                    </then>
-                                </if>
-                                <!-- Run PHPStan -->
-                                <exec executable="vendor/bin/phpstan"
-                                      passthru="true"
-                                      checkreturn="true"
-                                >
-                                    <arg value="analyse" />
-                                    <arg line="${phpstan.dir}" />
-                                    <arg line="-c phpstan.neon" />
-                                    <arg line="-a vendor/symbiote/silverstripe-phpstan/bootstrap.php" />
-                                    <arg line="--error-format table" />
-                                    <arg line="--level ${phpstan.level}"/>
-                                    <arg line="${phpstan.debug_cmd}"/>
-                                </exec>
-                            </then>
-                            <else>
-                                <echo msg="PHPStan SilverStripe extension is not installed in this project and was not executed." />
-                            </else>
-                        </if>
-                    </then>
-                    <else>
-                        <echo msg="PHPStan is not installed in this project and was not executed." />
-                    </else>
-                </if>
-            </then>
-            <else>
-                <echo msg="PHPStan has been disabled via the 'phpstan.disabled' property." />
-            </else>
-        </if>
-    </target>
+		<if>
+			<not>
+				<isset property="phpstan.disabled"/>
+			</not>
+			<then>
+				<!-- Run PHPStan if installed -->
+				<if>
+					<isset property="phpstan.installed"/>
+					<then>
+						<if>
+							<isset property="phpstan.silverstripe_installed"/>
+							<then>
+								<!-- Default values -->
+								<if>
+									<not>
+										<isset property="phpstan.level" />
+									</not>
+									<then>
+										<property name="phpstan.level" value="2" />
+									</then>
+								</if>
+								<if>
+									<not>
+										<isset property="phpstan.dir" />
+									</not>
+									<then>
+										<property name="phpstan.dir" value="${project.root}" />
+									</then>
+								</if>
+								<!-- Run PHPStan -->
+								<exec executable="vendor/bin/phpstan" passthru="true" checkreturn="true">
+									<arg value="analyse" />
+									<arg line="${phpstan.dir}" />
+									<arg line="-c phpstan.neon" />
+									<arg line="-a vendor/symbiote/silverstripe-phpstan/bootstrap.php" />
+									<arg line="--error-format table" />
+									<arg line="--level ${phpstan.level}"/>
+									<arg line="${phpstan.debug_cmd}"/>
+								</exec>
+							</then>
+							<else>
+								<echo msg="PHPStan SilverStripe extension is not installed in this project and was not executed." />
+							</else>
+						</if>
+					</then>
+					<else>
+						<echo msg="PHPStan is not installed in this project and was not executed." />
+					</else>
+				</if>
+			</then>
+			<else>
+				<echo msg="PHPStan has been disabled via the 'phpstan.disabled' property." />
+			</else>
+		</if>
+	</target>
 </project>
