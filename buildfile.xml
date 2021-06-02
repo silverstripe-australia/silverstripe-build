@@ -293,6 +293,7 @@ Allow from 127.0.0.1
 	<!-- Create a deployable package to use as the base for installing a new site FROM SCRATCH.
 	Please use the update-package target for creating a package to use for an update -->
 	<target name="package" depends="init">
+		<exec command="touch ${project.basedir}/.pkgignore" />
 		<property name="currentpackage" value="${build.output.dir}/${package.name}" />
 		<property name="packagetype" value="deploy" />
 		<phingcall target="archive-package" />
@@ -339,6 +340,7 @@ Allow from 127.0.0.1
 				<exclude name="install.*" />
 				<exclude name="docker-compose.*" />
 				<exclude name="*.sh" />
+				<excludesfile name="${project.basedir}/.pkgignore" />
 			</fileset>
 		</tar>
 	</target>
