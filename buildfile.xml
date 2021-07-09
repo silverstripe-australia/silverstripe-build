@@ -55,6 +55,8 @@
 	<taskdef name="sstest" classname="build.SilverStripeTestTask" classpath="${project.basedir}" />
 	<taskdef name="ssmodules" classname="build.LoadModulesTask" classpath="${project.basedir}" />
 	<taskdef name="sspatches" classname="build.ApplyPatchesTask" classpath="${project.basedir}" />
+	<taskdef name="buildsatis" classname="build.BuildSatisConfigTask" classpath="${project.basedir}" />
+
 
 	<taskdef name="ssdeploy" classname="build.SilverStripeDeployTask" classpath="${project.basedir}" />
 
@@ -106,6 +108,10 @@ Other features
 			</then>
 		</if>
 
+	</target>
+
+	<target name="build_satis">
+		<buildsatis />
 	</target>
 
 	<!-- deprecated target; defers to base install target now -->
@@ -310,6 +316,8 @@ Allow from 127.0.0.1
 				<exclude name="build.xml" />
 				<exclude name="**/*.env" />
 				<exclude name=".gitlab-ci.yml" />
+				<exclude name="satis.json" />
+				<exclude name="mysite/build" />
 				<exclude name="**/*dockerfile*" />
 				<exclude name="${project.root}/local.conf.php" />
 				<exclude name="${project.root}/_config/local.yml" />
@@ -412,6 +420,8 @@ Allow from 127.0.0.1
 				<exclude name="${project.root}/db.conf.php" />
 				<exclude name="**/*.env" />
 				<exclude name=".gitlab-ci.yml" />
+				<exclude name="satis.json" />
+				<exclude name="mysite/build" />
 				<exclude name="**/*dockerfile*" />
 				<exclude name="_ss_environment.php" />
 				<exclude name="${project.root}/local.conf.php" />
